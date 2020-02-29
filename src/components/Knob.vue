@@ -1,0 +1,111 @@
+<template>
+  <div class="knob-wrapper">
+    <q-knob
+      v-model="dimValue"
+      @input="dimLight"
+      :min="0"
+      :max="255"
+      size="80px"
+      :thickness="thickness"
+      :color="trackColor"
+      track-color="grey-10"
+      class="knob q-ma-md"
+    />
+
+    <light-switch :btn-id="id" :is-on="isOn" @lightsOff="turnOff" @lightsOn="turnOn" />
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import LightSwitch from "./LightSwitch.vue";
+
+export default {
+  name: "Knob",
+
+  props: ["light"],
+
+  components: {
+    "light-switch": LightSwitch
+  },
+
+  computed: {
+    ...mapGetters(["lightStates"]),
+    trackColor() {
+      if (this.dimValue < 25) return "amber-10";
+      if (this.dimValue < 50) return "amber-9";
+      if (this.dimValue < 75) return "amber-8";
+      if (this.dimValue < 100) return "amber-7";
+      if (this.dimValue < 125) return "amber-6";
+      if (this.dimValue < 150) return "amber-5";
+      if (this.dimValue < 175) return "amber-4";
+      if (this.dimValue < 200) return "amber-3";
+      if (this.dimValue <= 225) return "amber-2";
+      if (this.dimValue > 225) return "amber-1";
+      else return "amber 10";
+    }
+  },
+
+  watch: {},
+
+  data() {
+    return {
+      id: this.light,
+      dimValue: 0,
+      oldValue: 0,
+      isOn: undefined,
+      thickness: 0.4
+    };
+  },
+
+  methods: {
+    ...mapActions(["setDim"]),
+
+    dimLight(input) {
+      const id = this.id;
+      if (input != this.oldValue) {
+        this.isOn = true;
+        this.oldValue = input;
+        this.setDim({ input, id });
+      }
+    },
+    setBrightness() {
+      const lightList = this.lightStates;
+      const brightness = lightList[this.id].state.bri;
+      this.dimValue = brightness;
+    },
+    turnOff() {
+      this.dimValue = 0;
+      this.isOn = false;
+    },
+    turnOn() {
+      this.dimValue = 200;
+      this.isOn = true;
+    }
+  },
+
+  mounted() {
+    this.setBrightness();
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.knob {
+  margin: 0.2em;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+  }
+}
+</style>
