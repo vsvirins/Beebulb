@@ -32,9 +32,12 @@ export default new Vuex.Store({
       try {
         const response = await fetch(url);
         const data = await response.json();
-        task.commit('SET_GATEWAY', data);
-      } catch {
-        return task.commit('SET_GATEWAY', false);
+        Array.isArray(data) && data.length
+          ? task.commit('SET_GATEWAY', data)
+          : task.commit('SET_GATEWAY', false);
+      } catch (err) {
+        console.log('err');
+        task.commit('SET_GATEWAY', false);
       }
     },
 
@@ -52,9 +55,11 @@ export default new Vuex.Store({
     async getGroups(task) {
       const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups`;
       try {
-        const response = await fetch(url);
-        const data = await response.json();
-        task.commit('SET_GROUPS', data);
+        if (this.getters.gatewayFound) {
+          const response = await fetch(url);
+          const data = await response.json();
+          task.commit('SET_GROUPS', data);
+        } else null;
       } catch (err) {
         console.log(err);
       }
@@ -63,9 +68,11 @@ export default new Vuex.Store({
     async getLights(task) {
       const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/lights`;
       try {
-        const respone = await fetch(url);
-        const data = await respone.json();
-        return task.commit('SET_LIGHTS', data);
+        if (this.getters.gatewayFound) {
+          const respone = await fetch(url);
+          const data = await respone.json();
+          return task.commit('SET_LIGHTS', data);
+        } else null;
       } catch (err) {
         console.log(err);
       }
@@ -105,16 +112,20 @@ export default new Vuex.Store({
 
   getters: {
     gatewayFound: state => {
-      return state.gateway ? true : false;
+      return state.gateway === false ? false : true;
     },
     gatewayIP: state => {
-      return state.gateway['0'].internalipaddress;
+      return state.gateway === false
+        ? '0.0.0.0'
+        : state.gateway['0'].internalipaddress;
     },
     gatewayPort: state => {
       return state.gateway['0'].internalport;
     },
     gatewayAdress: state => {
-      return `${state.gateway['0'].internalipaddress}:${state.gateway['0'].internalport}`;
+      return state.gateway === false
+        ? ''
+        : `${state.gateway['0'].internalipaddress}:${state.gateway['0'].internalport}`;
     },
     gatewayName: state => {
       return state.gateway['0'].name;

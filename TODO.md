@@ -1,4 +1,7 @@
 - [ ] Dummie gateway
 - [ ] Demo app, sanbox or site?
-- [ ] 'No gateway found'
-- [ ] Dummie gateway
+
+- [x] 'Gateway not found'
+- [ ] Preset support
+- [ ] Fix config button state problem when clicking closing config menu
+- [ ] Preset support

@@ -11,9 +11,14 @@
           aria-label="Menu"
           icon="settings"
         />
-        <q-toolbar-title class="non-selectable">{{ gatewayName }}</q-toolbar-title>
+        <q-toolbar-title class="non-selectable">{{ topBarTitle }}</q-toolbar-title>
         <q-space />
-        <q-toggle icon="power_settings_new" v-model="toggleAll" color="positive" />
+        <q-toggle
+          icon="power_settings_new"
+          v-model="toggleAll"
+          color="positive"
+          v-if="gatewayFound"
+        />
       </q-toolbar>
     </q-header>
     <config :drawer-open="drawerOpen" @view-mode="darkMode = $event" />
@@ -28,7 +33,16 @@
           :group-id="group.id"
         />
       </div>
-      <preset-button />
+      <div class="no-gateway" v-else>
+        <q-btn
+          outline
+          icon="error_outline"
+          label="Gateway not found :("
+          text-color="white"
+          class="q-my-lg"
+        />
+      </div>
+      <preset-button v-if="gatewayFound" />
     </q-page-container>
   </q-layout>
 </body>
@@ -53,12 +67,20 @@ export default {
     return {
       drawerOpen: false,
       toggleAll: true,
-      darkMode: true
+      darkMode: true,
+      topBarTitle: ""
     };
   },
 
   computed: {
     ...mapGetters(["gatewayFound", "gatewayName", "groups"])
+  },
+  watch: {
+    gatewayFound() {
+      !this.gatewayFound
+        ? (this.topBarTitle = "JamGlow")
+        : (this.topBarTitle = this.gatewayName);
+    }
   }
 };
 </script>
@@ -92,6 +114,14 @@ html {
     .group-wrapper {
       display: flex;
       flex-direction: column;
+    }
+    .no-gateway {
+      display: flex;
+      min-height: 100%;
+      width: 100%;
+      align-content: center;
+      justify-content: center;
+      pointer-events: none;
     }
   }
 
