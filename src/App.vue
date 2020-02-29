@@ -78,7 +78,7 @@ export default {
   watch: {
     gatewayFound() {
       !this.gatewayFound
-        ? (this.topBarTitle = "JamGlow")
+        ? (this.topBarTitle = "Jambient")
         : (this.topBarTitle = this.gatewayName);
     }
   }
