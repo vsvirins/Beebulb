@@ -10,6 +10,7 @@
       :color="trackColor"
       track-color="grey-10"
       class="knob q-ma-md"
+      :step="5"
     />
 
     <light-switch :btn-id="id" :is-on="isOn" @lightsOff="turnOff" @lightsOn="turnOn" />
@@ -45,8 +46,6 @@ export default {
       else return "amber 10";
     }
   },
-
-  watch: {},
 
   data() {
     return {
@@ -86,6 +85,16 @@ export default {
 
   mounted() {
     this.setBrightness();
+
+    this.$store.subscribeAction({
+      before: action => {
+        if (action.type === "toggleAllLights") {
+          action.payload.state
+            ? ((this.dimValue = 200), (this.isOn = true))
+            : ((this.dimValue = 0), (this.isOn = false));
+        }
+      }
+    });
   }
 };
 </script>

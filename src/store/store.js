@@ -36,7 +36,7 @@ export default new Vuex.Store({
           ? task.commit('SET_GATEWAY', data)
           : task.commit('SET_GATEWAY', false);
       } catch (err) {
-        console.log('err');
+        console.log(err);
         task.commit('SET_GATEWAY', false);
       }
     },
@@ -106,6 +106,24 @@ export default new Vuex.Store({
         await fetch(url, { method: 'PUT', body: params });
       } catch (err) {
         console.log(err);
+      }
+    },
+
+    async toggleAllLights(task, { state }) {
+      const params = `{"on": ${state}, "bri": 200, "ct": 300}`;
+      const groups = Object.keys(this.getters.groups);
+      for (let group in groups) {
+        try {
+          const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${groups[group]}/action`;
+          (await state)
+            ? fetch(url, { method: 'PUT', body: params })
+            : fetch(url, {
+                method: 'PUT',
+                body: '{ "on": false, "bri": 0 }'
+              });
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   },

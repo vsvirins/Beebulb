@@ -4,12 +4,12 @@
     <q-header class="top-bar">
       <q-toolbar>
         <q-btn
-          flat
           dense
           round
+          style="background: #fee140"
           @click="drawerOpen = !drawerOpen"
           aria-label="Menu"
-          icon="settings"
+          icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
         />
         <q-toolbar-title class="non-selectable">{{ topBarTitle }}</q-toolbar-title>
         <q-space />
@@ -67,19 +67,24 @@ export default {
     return {
       drawerOpen: false,
       toggleAll: true,
-      darkMode: true,
-      topBarTitle: ""
+      darkMode: true
     };
   },
 
   computed: {
-    ...mapGetters(["gatewayFound", "gatewayName", "groups"])
+    ...mapGetters(["gatewayFound", "gatewayName", "groups"]),
+    topBarTitle: {
+      get() {
+        return this.gatewayFound ? this.gatewayName : "Beebulb";
+      },
+      set(topBarTitle) {
+        return topBarTitle;
+      }
+    }
   },
   watch: {
-    gatewayFound() {
-      !this.gatewayFound
-        ? (this.topBarTitle = "Jambient")
-        : (this.topBarTitle = this.gatewayName);
+    toggleAll() {
+      this.$store.dispatch("toggleAllLights", { state: this.toggleAll });
     }
   }
 };
@@ -93,6 +98,7 @@ html {
 
   body {
     background-image: $sunset;
+
     backface-visibility: hidden;
     background-size: 400% 400%;
     //animation: gradient 15s ease infinite;

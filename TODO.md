@@ -5,6 +5,9 @@
 - [ ] Fix config menu state problem when closing config menu
 - [ ] Detect dark mode
 - [ ] Change background
+- [x] Toggle all lights on/off
+- [ ] Check if all lights are off/on
+- [ ] Modulize store
 
 ### Live demo
 

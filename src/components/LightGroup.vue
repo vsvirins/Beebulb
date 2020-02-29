@@ -34,7 +34,7 @@ export default {
 
   data() {
     return {
-      lights: this.groupLights, //change name to lights
+      lights: this.groupLights,
       name: this.groupName,
       id: this.groupId,
       position: 0,
