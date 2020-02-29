@@ -1,0 +1,4 @@
+- [ ] Dummie gateway
+- [ ] Demo app, sanbox or site?
+- [ ] 'No gateway found'
+- [ ] Dummie gateway
