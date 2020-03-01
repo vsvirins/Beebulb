@@ -24,7 +24,11 @@
           />
         </q-toolbar>
       </q-header>
-      <config :drawer-open="drawerOpen" @view-mode="darkMode = $event" />
+      <config
+        :drawer-open="drawerOpen"
+        @view-mode="darkMode = $event"
+        @drawer-close="drawerOpen = $event"
+      />
 
       <q-page-container @click="drawerOpen = false" class="flex-center">
         <div class="group-wrapper" v-if="gatewayFound">
@@ -165,11 +169,11 @@ html {
 
     .light-name {
       h6 {
-        color: $primary-dark !important;
+        color: $secondary-dark !important;
       }
     }
 
-    .drawer {
+    .config-drawer {
       background: rgb(235, 235, 235);
       color: $primary-dark;
     }

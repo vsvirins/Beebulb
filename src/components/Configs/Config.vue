@@ -1,5 +1,10 @@
 <template>
-  <q-drawer v-model="drawerState" content-class="drawer" dark :width="200">
+  <q-drawer
+    v-model="drawerState"
+    content-class="config-drawer"
+    dark
+    :width="200"
+  >
     <q-list>
       <q-item>
         <q-toggle
@@ -117,6 +122,9 @@ export default {
       if (this.drawerOpen) this.drawerState = true;
       else this.drawerState = false;
     },
+    drawerState() {
+      if (!this.drawerState) this.$emit('drawer-close', this.drawerState);
+    },
     darkMode() {
       this.$emit('view-mode', this.darkMode);
     }
@@ -154,9 +162,8 @@ export default {
 <style lang="scss" scoped>
 @import '../../styles/swatch';
 
-.drawer {
+.config-drawer {
   background: $secondary-dark;
-  user-select: none;
 
   .no-gateway {
     opacity: 0.5;

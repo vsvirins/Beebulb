@@ -93,26 +93,31 @@ export default {
     color: rgb(235, 235, 235);
     align-self: stretch;
     padding: 0;
+    padding-top: 2em;
     justify-content: space-evenly;
     overflow-x: scroll;
     overflow-y: hidden;
     flex-wrap: nowrap;
+    height: 12em;
     //bg-grey-9 text-white
   }
 
   .show-enter-active {
-    animation: slide 0.2s;
+    animation: slide 0.2s ease-in-out;
   }
   .show-leave-active {
-    animation: slide 0.2s reverse;
+    animation: slide 0.2s reverse ease-in-out;
   }
 
   @keyframes slide {
     0% {
+      padding: 0;
+      overflow: hidden;
       max-height: 0vh;
     }
     100% {
-      max-height: 20vh;
+      overflow: hidden;
+      max-height: 23vh;
     }
   }
 }

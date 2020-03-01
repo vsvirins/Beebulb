@@ -4,7 +4,7 @@
       flat
       :icon="hexagon"
       class="btn"
-      size="110%"
+      size="125%"
       round
       :color="stateColor"
       @click="toggle"
@@ -78,18 +78,18 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
 .btn-wrapper {
   left: -50%;
-  transform: translate(29.4%, -171%);
+  transform: translate(31.3%, -182%);
   pointer-events: none;
   .light-name {
     position: absolute;
     text-align: center;
     pointer-events: none;
     width: 100%;
-    left: -29.5%;
-    top: 125%;
+    left: -31%;
+    top: 110%;
     h6 {
       font-family: 'Source Code Pro';
-      font-size: 70%;
+      font-size: 80%;
       color: rgba(243, 243, 243, 0.61);
       pointer-events: none;
       user-select: none;

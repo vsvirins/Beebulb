@@ -5,11 +5,11 @@
       @input="dimLight"
       :min="0"
       :max="255"
-      size="80px"
+      size="100px"
       :thickness="thickness"
       :color="trackColor"
       track-color="grey-10"
-      class="knob q-ma-md"
+      class="knob q-ma-sm"
       :step="5"
     />
 
@@ -102,18 +102,5 @@ export default {
 <style lang="scss" scoped>
 .knob {
   margin: 0.2em;
-  transition: all 0.1s ease-in-out;
-  &:hover {
-    transform: scale(1.2);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -o-transform: scale(1.2);
-  }
-  &:active {
-    transform: scale(1.2);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -o-transform: scale(1.2);
-  }
 }
 </style>
