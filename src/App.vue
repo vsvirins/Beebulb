@@ -1,67 +1,69 @@
 <template>
-<body :class="{'light-mode': !darkMode}">
-  <q-layout view="hHh Lpr lff">
-    <q-header class="top-bar">
-      <q-toolbar>
-        <q-btn
-          dense
-          round
-          flat
-          class="config-btn"
-          @click="drawerOpen = !drawerOpen"
-          aria-label="Menu"
-          icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
-        />
-        <q-toolbar-title class="non-selectable">{{ topBarTitle }}</q-toolbar-title>
-        <q-space />
-        <q-toggle
-          icon="power_settings_new"
-          v-model="toggleAll"
-          color="positive"
-          v-if="gatewayFound"
-        />
-      </q-toolbar>
-    </q-header>
-    <config :drawer-open="drawerOpen" @view-mode="darkMode = $event" />
+  <body :class="{ 'light-mode': !darkMode }">
+    <q-layout view="hHh Lpr lff">
+      <q-header class="top-bar">
+        <q-toolbar>
+          <q-btn
+            dense
+            round
+            flat
+            class="config-btn"
+            @click="drawerOpen = !drawerOpen"
+            aria-label="Menu"
+            icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
+          />
+          <q-toolbar-title class="non-selectable">{{
+            topBarTitle
+          }}</q-toolbar-title>
+          <q-space />
+          <q-toggle
+            icon="power_settings_new"
+            v-model="toggleAll"
+            color="positive"
+            v-if="gatewayFound"
+          />
+        </q-toolbar>
+      </q-header>
+      <config :drawer-open="drawerOpen" @view-mode="darkMode = $event" />
 
-    <q-page-container @click="drawerOpen = false" class="flex-center">
-      <div class="group-wrapper" v-if="gatewayFound">
-        <light-group
-          v-for="group in groups"
-          :key="group.id"
-          :group-lights="group.lights"
-          :group-name="group.name"
-          :group-id="group.id"
-        />
-      </div>
-      <div class="no-gateway" v-else>
-        <q-btn
-          outline
-          icon="error_outline"
-          label="Gateway not found :("
-          text-color="white"
-          class="q-my-lg"
-        />
-      </div>
-      <preset-button v-if="gatewayFound" />
-    </q-page-container>
-  </q-layout>
-</body>
+      <q-page-container @click="drawerOpen = false" class="flex-center">
+        <div class="group-wrapper" v-if="gatewayFound">
+          <light-group
+            v-for="group in groups"
+            :key="group.id"
+            :group-lights="group.lights"
+            :group-name="group.name"
+            :group-id="group.id"
+          />
+        </div>
+        <div class="no-gateway" v-else>
+          <q-btn
+            outline
+            icon="error_outline"
+            label="Gateway not found :("
+            text-color="white"
+            class="q-my-lg"
+          />
+        </div>
+        <preset-button v-if="gatewayFound" />
+      </q-page-container>
+    </q-layout>
+  </body>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Config from "./components/Config.vue";
-import LightGroup from "./components/LightGroup.vue";
-import PresetButton from "./components/PresetButton.vue";
+import { mapGetters } from 'vuex';
+import Config from './components/Configs/Config.vue';
+import LightGroup from './components/Lights/LightGroup.vue';
+import PresetButton from './components/PresetButton/PresetButton.vue';
 
 export default {
-  name: "LayoutDefault",
+  name: 'LayoutDefault',
 
   components: {
-    "light-group": LightGroup,
+    'light-group': LightGroup,
     config: Config,
-    "preset-button": PresetButton
+    'preset-button': PresetButton
   },
 
   data() {
@@ -73,10 +75,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["gatewayFound", "gatewayName", "groups"]),
+    ...mapGetters(['gatewayFound', 'gatewayName', 'groups']),
     topBarTitle: {
       get() {
-        return this.gatewayFound ? this.gatewayName : "Beebulb";
+        return this.gatewayFound ? this.gatewayName : 'Beebulb';
       },
       set(topBarTitle) {
         return topBarTitle;
@@ -85,21 +87,21 @@ export default {
   },
   watch: {
     toggleAll() {
-      this.$store.dispatch("toggleAllLights", { state: this.toggleAll });
+      this.$store.dispatch('toggleAllLights', { state: this.toggleAll });
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import "./styles/swatch";
-@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:700&display=swap");
+@import './styles/swatch';
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:700&display=swap');
 
 html {
   min-height: 100%;
 
   body {
-    font-family: "Source Code Pro";
+    font-family: 'Source Code Pro';
     background-image: $bee-bg-dark;
 
     backface-visibility: hidden;

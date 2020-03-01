@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/swatch';
+@import '../../styles/swatch';
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:900&display=swap');
 
 .light-group {

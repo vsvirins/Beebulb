@@ -3,14 +3,20 @@
     <q-list>
       <q-item>
         <q-toggle
-          class="fixed-top-right q-ma-sm"
+          class="absolute-top q-ma-sm"
           :icon="icons['dark']"
           color="grey-8"
           v-model="darkMode"
         />
       </q-item>
       <q-space />
-      <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
+      <q-item
+        clickable
+        tag="a"
+        target="_blank"
+        href="https://chat.quasar.dev"
+        :class="{ 'no-gateway': !gatewayFound }"
+      >
         <q-item-section avatar>
           <q-icon :name="icons['light']" />
         </q-item-section>
@@ -19,7 +25,11 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable @click="editGroups = true">
+      <q-item
+        clickable
+        @click="editGroups = true"
+        :class="{ 'no-gateway': !gatewayFound }"
+      >
         <q-item-section avatar>
           <q-icon :name="icons['lightgroup']" />
         </q-item-section>
@@ -29,7 +39,13 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
+      <q-item
+        clickable
+        tag="a"
+        target="_blank"
+        href="https://forum.quasar.dev"
+        :class="{ 'no-gateway': !gatewayFound }"
+      >
         <q-item-section avatar>
           <q-icon :name="icons['presets']" />
         </q-item-section>
@@ -38,13 +54,18 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable @click="editGateway = true">
+      <q-item
+        clickable
+        @click="editGateway = true"
+        :class="{ 'no-gateway': !gatewayFound }"
+      >
         <q-item-section avatar>
           <q-icon :name="icons['gateway']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Gateway</q-item-label>
           <gateway-config
+            v-if="gatewayFound"
             :edit-gateway="editGateway"
             @closeGatewayEdit="closeGatewayEdit"
           />
@@ -79,6 +100,7 @@ import {
   mdiPowerSleep,
   mdiPaletteOutline
 } from '@mdi/js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Config',
@@ -99,6 +121,7 @@ export default {
       this.$emit('view-mode', this.darkMode);
     }
   },
+
   data() {
     return {
       drawerState: false,
@@ -116,6 +139,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(['gatewayFound'])
+  },
+
   methods: {
     closeGatewayEdit() {
       this.editGateway = false;
@@ -125,9 +152,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/swatch';
+@import '../../styles/swatch';
 
 .drawer {
   background: $secondary-dark;
+  user-select: none;
+
+  .no-gateway {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
 }
 </style>
