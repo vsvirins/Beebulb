@@ -7,7 +7,7 @@
           dense
           round
           flat
-          style="background: #fee140"
+          class="config-btn"
           @click="drawerOpen = !drawerOpen"
           aria-label="Menu"
           icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
@@ -93,15 +93,17 @@ export default {
 
 <style lang="scss">
 @import "./styles/swatch";
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:700&display=swap");
 
 html {
   min-height: 100%;
 
   body {
-    background-image: $sunset;
+    font-family: "Source Code Pro";
+    background-image: $bee-bg-dark;
 
     backface-visibility: hidden;
-    background-size: 400% 400%;
+    //background-size: 400% 400%;
     //animation: gradient 15s ease infinite;
     @keyframes gradient {
       0% {
@@ -117,6 +119,9 @@ html {
 
     .top-bar {
       background: $primary-dark;
+      .config-btn {
+        background: $accent;
+      }
     }
     .group-wrapper {
       display: flex;
@@ -145,12 +150,12 @@ html {
       color: $secondary-dark;
     }
     .light-group .knobs {
-      background: whitesmoke;
+      background: rgb(255, 255, 255);
     }
 
     .q-circular-progress__track {
-      color: white !important;
-      background: white !important;
+      color: whitesmoke !important;
+      background: whitesmoke !important;
     }
     .text-dark {
       color: $primary-light !important;

@@ -2,12 +2,15 @@
 
 $primary-dark: #1a1a1a;
 $secondary-dark: #393e46;
-$primary-light: #c9c9c9;
-$secondary-light: rgb(235, 233, 233);
-$accent: #c9ac4d;
+$primary-light: #f0f0f0;
+$secondary-light: rgb(252, 252, 252);
+$accent: #e08926;
 
 $sunset: linear-gradient(to right, #fa709a 0%, #fee140 100%);
 $tropical: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
 $winter: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
-$dark-steel: linear-gradient(to right, #434343 0%, black 100%);
+$dark-steel: linear-gradient(to right, #272727 0%, black 100%);
 $juicy: linear-gradient(to top, #e14fad 0%, #f9d423 100%);
+$morning: linear-gradient(20deg, #f6d365 0%, #fda085 100%);
+$premium-dark: linear-gradient(to right, #434343 0%, black 100%);
+$bee-bg-dark: linear-gradient(45deg, #7e4c14 0%, rgb(24, 24, 24) 100%);

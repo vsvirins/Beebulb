@@ -13,33 +13,38 @@
       :step="5"
     />
 
-    <light-switch :btn-id="id" :is-on="isOn" @lightsOff="turnOff" @lightsOn="turnOn" />
+    <light-switch
+      :btn-id="id"
+      :is-on="isOn"
+      @lightsOff="turnOff"
+      @lightsOn="turnOn"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import LightSwitch from "./LightSwitch.vue";
+import { mapActions, mapGetters } from 'vuex';
+import LightSwitch from './LightSwitch.vue';
 export default {
-  name: "Knob",
-  props: ["light"],
+  name: 'Knob',
+  props: ['light'],
   components: {
-    "light-switch": LightSwitch
+    'light-switch': LightSwitch
   },
   computed: {
-    ...mapGetters(["lightStates"]),
+    ...mapGetters(['lightStates']),
     trackColor() {
-      if (this.dimValue < 25) return "amber-10";
-      if (this.dimValue < 50) return "amber-9";
-      if (this.dimValue < 75) return "amber-8";
-      if (this.dimValue < 100) return "amber-7";
-      if (this.dimValue < 125) return "amber-6";
-      if (this.dimValue < 150) return "amber-5";
-      if (this.dimValue < 175) return "amber-4";
-      if (this.dimValue < 200) return "amber-3";
-      if (this.dimValue <= 225) return "amber-2";
-      if (this.dimValue > 225) return "amber-1";
-      else return "amber 10";
+      if (this.dimValue < 25) return 'amber-9';
+      if (this.dimValue < 50) return 'amber-8';
+      if (this.dimValue < 75) return 'amber-7';
+      if (this.dimValue < 100) return 'amber-6';
+      if (this.dimValue < 125) return 'amber-5';
+      if (this.dimValue < 150) return 'amber-4';
+      if (this.dimValue < 175) return 'amber-3';
+      if (this.dimValue < 200) return 'amber-2';
+      if (this.dimValue <= 225) return 'amber-1';
+      if (this.dimValue > 225) return 'yellow-1';
+      else return 'amber 10';
     }
   },
   data() {
@@ -48,11 +53,11 @@ export default {
       dimValue: 0,
       oldValue: 0,
       isOn: undefined,
-      thickness: 0.4
+      thickness: 0.3
     };
   },
   methods: {
-    ...mapActions(["setDim", "getLights"]),
+    ...mapActions(['setDim', 'getLights']),
     dimLight(input) {
       const id = this.id;
       if (input != this.oldValue) {
@@ -83,7 +88,7 @@ export default {
     this.setBrightness(this.getLights);
     this.$store.subscribeAction({
       before: action => {
-        if (action.type === "toggleAllLights") {
+        if (action.type === 'toggleAllLights') {
           action.payload.state
             ? ((this.dimValue = 200), (this.isOn = true))
             : ((this.dimValue = 0), (this.isOn = false));

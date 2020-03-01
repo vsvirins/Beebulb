@@ -1,10 +1,15 @@
 <template>
-  <q-card class="light-group" :style="{top: position + 'px' , order: id}">
+  <q-card class="light-group" :style="{ top: position + 'px', order: id }">
     <q-card-section class="light-group-header" horizontal @click="show = !show">
-      <div class="text-h5 non-selectable q-ma-sm" style="font-family: 'Lobster'">{{ name }}</div>
+      <div
+        class="text-h5 non-selectable q-mx-md q-my-sm"
+        style="font-family: 'Source Code Pro'; font-size: 1.4rem; font-weight: 700"
+      >
+        {{ name }}
+      </div>
       <q-btn
         flat
-        class="absolute-center"
+        class="absolute-right"
         size="80%"
         icon="drag_handle"
         v-touch-pan.vertical.prevent.mouse="setPosition"
@@ -12,25 +17,30 @@
     </q-card-section>
     <transition name="show">
       <q-card-actions class="knobs" align="around" v-if="show">
-        <knob v-for="light in lights" :key="light" :light="light" :show="show" />
+        <knob
+          v-for="light in lights"
+          :key="light"
+          :light="light"
+          :show="show"
+        />
       </q-card-actions>
     </transition>
   </q-card>
 </template>
 
 <script>
-import Knob from "./Knob.vue";
+import Knob from './Knob.vue';
 
 //:style="{top: position + 'px'}"
 
 export default {
-  name: "LightGroup",
+  name: 'LightGroup',
 
   components: {
     knob: Knob
   },
 
-  props: ["group-lights", "group-name", "group-id"],
+  props: ['group-lights', 'group-name', 'group-id'],
 
   data() {
     return {
@@ -63,23 +73,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/swatch";
-@import url("https://fonts.googleapis.com/css?family=Lobster&display=swap");
+@import '../styles/swatch';
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:900&display=swap');
+
 .light-group {
   position: relative;
   order: 0;
   box-shadow: none;
   border-radius: 0px;
-  border: 1px solid rgb(117, 116, 116);
+  border: 1px solid rgb(37, 37, 37);
 
   .light-group-header {
-    background: rgb(112, 112, 112);
-    color: rgb(235, 235, 235);
-    //bg-grey-8 text-grey-4
+    background: rgb(46, 46, 46);
+    color: rgb(196, 196, 196);
   }
 
   .knobs {
-    background: #444;
+    background: rgb(59, 59, 59);
     color: rgb(235, 235, 235);
     align-self: stretch;
     padding: 0;

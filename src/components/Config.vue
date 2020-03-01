@@ -4,7 +4,7 @@
       <q-item>
         <q-toggle
           class="fixed-top-right q-ma-sm"
-          icon="nights_stay"
+          :icon="icons['dark']"
           color="grey-8"
           v-model="darkMode"
         />
@@ -12,7 +12,7 @@
       <q-space />
       <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
         <q-item-section avatar>
-          <q-icon name="wb_incandescent" />
+          <q-icon :name="icons['light']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Lights</q-item-label>
@@ -21,7 +21,7 @@
 
       <q-item clickable @click="editGroups = true">
         <q-item-section avatar>
-          <q-icon name="apps" />
+          <q-icon :name="icons['lightgroup']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Groups</q-item-label>
@@ -31,7 +31,7 @@
 
       <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
         <q-item-section avatar>
-          <q-icon name="camera" />
+          <q-icon :name="icons['presets']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Presets</q-item-label>
@@ -40,44 +40,54 @@
 
       <q-item clickable @click="editGateway = true">
         <q-item-section avatar>
-          <q-icon name="rss_feed" />
+          <q-icon :name="icons['gateway']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Gateway</q-item-label>
-          <gateway-config :edit-gateway="editGateway" @closeGatewayEdit="closeGatewayEdit" />
+          <gateway-config
+            :edit-gateway="editGateway"
+            @closeGatewayEdit="closeGatewayEdit"
+          />
         </q-item-section>
       </q-item>
 
-      <q-item clickable tag="a" target="_blank" href="https://github.com/vsvirins/Beebulb">
+      <q-item
+        clickable
+        tag="a"
+        target="_blank"
+        href="https://github.com/vsvirins/Beebulb"
+      >
         <q-item-section avatar>
-          <q-icon
-            name="img:https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-          />
+          <q-icon :name="icons['github']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>About</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item-section>
-        <p class="q-mx-sm" style="font-size: 8pt">{{ gatewayIP }}</p>
-      </q-item-section>
     </q-list>
   </q-drawer>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import GroupsConfig from "./GroupsConfig.vue";
-import GatewayConfig from "./GatewayConfig.vue";
+import GroupsConfig from './GroupsConfig.vue';
+import GatewayConfig from './GatewayConfig.vue';
+import {
+  mdiGithubCircle,
+  mdiLightbulbOutline,
+  mdiLightbulbGroupOutline,
+  mdiAccessPoint,
+  mdiPowerSleep,
+  mdiPaletteOutline
+} from '@mdi/js';
 
 export default {
-  name: "Config",
+  name: 'Config',
 
-  props: ["drawer-open"],
+  props: ['drawer-open'],
 
   components: {
-    "groups-config": GroupsConfig,
-    "gateway-config": GatewayConfig
+    'groups-config': GroupsConfig,
+    'gateway-config': GatewayConfig
   },
 
   watch: {
@@ -86,7 +96,7 @@ export default {
       else this.drawerState = false;
     },
     darkMode() {
-      this.$emit("view-mode", this.darkMode);
+      this.$emit('view-mode', this.darkMode);
     }
   },
   data() {
@@ -94,12 +104,18 @@ export default {
       drawerState: false,
       darkMode: true,
       editGroups: false,
-      editGateway: false
+      editGateway: false,
+      icons: {
+        github: mdiGithubCircle,
+        light: mdiLightbulbOutline,
+        lightgroup: mdiLightbulbGroupOutline,
+        gateway: mdiAccessPoint,
+        dark: mdiPowerSleep,
+        presets: mdiPaletteOutline
+      }
     };
   },
-  computed: {
-    ...mapGetters(["gatewayIP"])
-  },
+
   methods: {
     closeGatewayEdit() {
       this.editGateway = false;
@@ -109,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/swatch";
+@import '../styles/swatch';
 
 .drawer {
   background: $secondary-dark;

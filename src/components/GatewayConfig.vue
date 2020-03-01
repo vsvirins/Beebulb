@@ -30,7 +30,9 @@
               transition-show="scale"
               transition-hide="scale"
               content-style="background-color: #222; opacity: .5"
-            >Changing gateway name may take a while.</q-tooltip>
+            >
+              <small>Changing gateway name may take a while.</small>
+            </q-tooltip>
           </q-input>
         </q-card-section>
 
