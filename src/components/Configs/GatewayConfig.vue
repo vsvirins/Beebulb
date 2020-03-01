@@ -15,10 +15,12 @@
             dense
             dark
             borderless
+            autofocus
             v-model="newGatewayName"
             :placeholder="gatewayName"
             style="font-size: 2rem"
             :hint="gatewayAdress"
+            @keypress.enter="updateGateway"
           >
             <template v-slot:before>
               <q-icon name="edit" size="60%" />
@@ -31,12 +33,12 @@
               transition-hide="scale"
               content-style="background-color: #222; opacity: .5"
             >
-              <small>Changing gateway name may take a while.</small>
+              <small>Changing name may take a while.</small>
             </q-tooltip>
           </q-input>
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary">
+        <q-card-actions align="right" class="text-grey">
           <q-btn flat label="Save" @click="updateGateway" />
         </q-card-actions>
       </q-card>
@@ -45,15 +47,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  name: "GatewayConfig",
-  props: ["edit-gateway"],
+  name: 'GatewayConfig',
+  props: ['edit-gateway'],
   data() {
     return {
       active: false,
-      address: "",
-      newGatewayName: ""
+      address: '',
+      newGatewayName: ''
     };
   },
   watch: {
@@ -62,18 +64,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["gatewayAdress", "gatewayName"])
+    ...mapGetters(['gatewayAdress', 'gatewayName'])
   },
   methods: {
-    ...mapActions(["changeGatewayName"]),
+    ...mapActions(['changeGatewayName']),
     updateGateway() {
-      if (this.newGatewayName !== "") {
+      if (this.newGatewayName !== '') {
         this.changeGatewayName({ name: this.newGatewayName });
       }
-      this.$emit("closeGatewayEdit");
+      this.$emit('closeGatewayEdit');
     },
     closeGatewayEdit() {
-      this.$emit("closeGatewayEdit");
+      this.$emit('closeGatewayEdit');
     }
   }
 };

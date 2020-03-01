@@ -1,5 +1,5 @@
 <template>
-  <q-card class="light-group" :style="{ top: position + 'px', order: id }">
+  <q-card class="light-group" :style="{ order: id }">
     <q-card-section class="light-group-header" horizontal @click="show = !show">
       <div
         class="text-h5 non-selectable q-mx-md q-my-sm"
@@ -7,12 +7,11 @@
       >
         {{ name }}
       </div>
-      <q-btn
-        flat
-        class="absolute-right"
-        size="80%"
-        icon="drag_handle"
-        v-touch-pan.vertical.prevent.mouse="setPosition"
+      <q-icon
+        class="minimize-icon"
+        size="150%"
+        :name="minimizeIcon"
+        :class="!show ? 'rotate-minimize-icon' : 'rotate-back'"
       />
     </q-card-section>
     <transition name="show">
@@ -30,6 +29,7 @@
 
 <script>
 import Knob from './Knob.vue';
+import { mdiChevronUp } from '@mdi/js';
 
 //:style="{top: position + 'px'}"
 
@@ -48,27 +48,12 @@ export default {
       name: this.groupName,
       id: this.groupId,
       position: 0,
-      show: true
+      show: true,
+      minimizeIcon: mdiChevronUp
     };
   },
 
-  methods: {
-    setPosition(e) {
-      // const valueLimit = (val, min, max) => {
-      //   return val < min ? min : val > max ? max : val;
-      // };
-      const selected = this.$el;
-      this.position = e.offset.y;
-      if (e.offset.y > 20) {
-        selected.style.order;
-        selected.style.top = 0;
-      }
-      if (e.offset.y < 100) {
-        selected.style.order--;
-        selected.style.top = 0;
-      }
-    }
-  }
+  methods: {}
 };
 </script>
 
@@ -86,6 +71,38 @@ export default {
   .light-group-header {
     background: rgb(46, 46, 46);
     color: rgb(196, 196, 196);
+
+    .minimize-icon {
+      position: absolute;
+      right: 1%;
+      top: 25%;
+    }
+    .rotate-minimize-icon {
+      animation: rotate 0.2s;
+      transform: rotate(180deg);
+    }
+    .rotate-back {
+      transform: rotate(0deg);
+      animation: rotate-back 0.2s;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(180deg);
+      }
+    }
+
+    @keyframes rotate-back {
+      0% {
+        transform: rotate(-180deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
   }
 
   .knobs {
