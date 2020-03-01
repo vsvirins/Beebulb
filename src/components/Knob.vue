@@ -20,16 +20,12 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import LightSwitch from "./LightSwitch.vue";
-
 export default {
   name: "Knob",
-
   props: ["light"],
-
   components: {
     "light-switch": LightSwitch
   },
-
   computed: {
     ...mapGetters(["lightStates"]),
     trackColor() {
@@ -46,7 +42,6 @@ export default {
       else return "amber 10";
     }
   },
-
   data() {
     return {
       id: this.light,
@@ -56,10 +51,8 @@ export default {
       thickness: 0.4
     };
   },
-
   methods: {
-    ...mapActions(["setDim"]),
-
+    ...mapActions(["setDim", "getLights"]),
     dimLight(input) {
       const id = this.id;
       if (input != this.oldValue) {
@@ -68,10 +61,14 @@ export default {
         this.setDim({ input, id });
       }
     },
-    setBrightness() {
+    async setBrightness(callback) {
+      await callback();
       const lightList = this.lightStates;
       const brightness = lightList[this.id].state.bri;
-      this.dimValue = brightness;
+      const state = lightList[this.id].state.on;
+
+      brightness < 5 ? (this.dimValue = 0) : (this.dimValue = brightness);
+      this.isOn = state;
     },
     turnOff() {
       this.dimValue = 0;
@@ -82,10 +79,8 @@ export default {
       this.isOn = true;
     }
   },
-
   mounted() {
-    this.setBrightness();
-
+    this.setBrightness(this.getLights);
     this.$store.subscribeAction({
       before: action => {
         if (action.type === "toggleAllLights") {
@@ -109,7 +104,6 @@ export default {
     -moz-transform: scale(1.2);
     -o-transform: scale(1.2);
   }
-
   &:active {
     transform: scale(1.2);
     -webkit-transform: scale(1.2);

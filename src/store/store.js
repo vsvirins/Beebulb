@@ -125,6 +125,17 @@ export default new Vuex.Store({
           console.log(err);
         }
       }
+    },
+
+    async changeGatewayName(task, { name }) {
+      const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/config`;
+      const params = `{"name": "${name}"}`;
+      try {
+        await fetch(url, { method: 'PUT', body: params });
+        this.dispatch('discoverGateway');
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
 

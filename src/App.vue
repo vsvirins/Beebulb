@@ -6,6 +6,7 @@
         <q-btn
           dense
           round
+          flat
           style="background: #fee140"
           @click="drawerOpen = !drawerOpen"
           aria-label="Menu"
@@ -165,14 +166,6 @@ html {
       background: rgb(235, 235, 235);
       color: $primary-dark;
     }
-
-    // filter: hue-rotate(180deg) invert(1);
-    // .group-wrapper {
-    //   background: #999;
-    //   .knobs {
-    //     filter: invert(1) hue-rotate(180deg);
-    //   }
-    // }
   }
 }
 </style>

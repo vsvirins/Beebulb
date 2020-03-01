@@ -2,12 +2,15 @@
 
 ### General
 
-- [ ] Fix config menu state problem when closing config menu
+- [ ] Fix state problem when closing config menu
 - [ ] Detect dark mode
 - [ ] Change background
 - [x] Toggle all lights on/off
 - [ ] Check if all lights are off/on
 - [ ] Modulize store
+- [ ] Re-write README
+- [ ] License
+- [ ] Credit
 
 ### Live demo
 
@@ -18,9 +21,11 @@
 ### Configs
 
 - [x] 'Gateway not found'
-- [ ] Gateway info dialog
+- [x] Gateway info dialog
+- [x] Change gateway name
 - [ ] New group
 - [ ] Remove group
+- [ ] Rename group
 - [ ] Add light to group
 - [ ] Remove light from group
 - [ ] Gateway auth app

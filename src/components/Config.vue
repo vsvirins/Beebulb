@@ -19,12 +19,13 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable tag="a" target="_blank" href="#">
+      <q-item clickable @click="editGroups = true">
         <q-item-section avatar>
           <q-icon name="apps" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Groups</q-item-label>
+          <groups-config :edit-groups="editGroups" />
         </q-item-section>
       </q-item>
 
@@ -37,18 +38,21 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
+      <q-item clickable @click="editGateway = true">
         <q-item-section avatar>
           <q-icon name="rss_feed" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Gateway</q-item-label>
+          <gateway-config :edit-gateway="editGateway" @closeGatewayEdit="closeGatewayEdit" />
         </q-item-section>
       </q-item>
 
-      <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+      <q-item clickable tag="a" target="_blank" href="https://github.com/vsvirins/Beebulb">
         <q-item-section avatar>
-          <q-icon name="code" />
+          <q-icon
+            name="img:https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          />
         </q-item-section>
         <q-item-section>
           <q-item-label>About</q-item-label>
@@ -63,11 +67,18 @@
 
 <script>
 import { mapGetters } from "vuex";
+import GroupsConfig from "./GroupsConfig.vue";
+import GatewayConfig from "./GatewayConfig.vue";
 
 export default {
   name: "Config",
 
   props: ["drawer-open"],
+
+  components: {
+    "groups-config": GroupsConfig,
+    "gateway-config": GatewayConfig
+  },
 
   watch: {
     drawerOpen() {
@@ -81,11 +92,18 @@ export default {
   data() {
     return {
       drawerState: false,
-      darkMode: true
+      darkMode: true,
+      editGroups: false,
+      editGateway: false
     };
   },
   computed: {
     ...mapGetters(["gatewayIP"])
+  },
+  methods: {
+    closeGatewayEdit() {
+      this.editGateway = false;
+    }
   }
 };
 </script>

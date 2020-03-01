@@ -12,7 +12,7 @@
     </q-card-section>
     <transition name="show">
       <q-card-actions class="knobs" align="around" v-if="show">
-        <knob v-for="light in lights" :key="light" :light="light" />
+        <knob v-for="light in lights" :key="light" :light="light" :show="show" />
       </q-card-actions>
     </transition>
   </q-card>
@@ -83,7 +83,7 @@ export default {
     color: rgb(235, 235, 235);
     align-self: stretch;
     padding: 0;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     overflow-x: scroll;
     overflow-y: hidden;
     flex-wrap: nowrap;

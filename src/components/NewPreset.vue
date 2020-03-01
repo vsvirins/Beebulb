@@ -223,7 +223,6 @@ export default {
   watch: {
     addPreset() {
       this.active = this.addPreset;
-      console.log(this.addPreset);
     }
   },
   data() {

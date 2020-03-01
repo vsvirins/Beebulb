@@ -18,12 +18,9 @@
 
 <script>
 import { mapActions } from "vuex";
-
 export default {
   name: "LightSwitch",
-
   props: ["btn-id", "is-on"],
-
   data() {
     return {
       id: this.btnId,
@@ -37,16 +34,13 @@ export default {
       else this.stateColor = "dark";
     }
   },
-
   computed: {
     lightName() {
       return this.$store.state.lights[this.id].name;
     }
   },
-
   methods: {
     ...mapActions(["lightOnOff", "getLightState"]),
-
     async toggle() {
       const state = await this.getLightState({ id: this.id });
       this.lightOnOff({ state, id: this.id });
@@ -60,10 +54,8 @@ export default {
           this.$emit("lightsOff"),
           (this.lightState = !state);
     },
-
     async checkLight() {
       this.lightState = await this.getLightState({ id: this.id });
-
       if (this.lightState) this.stateColor = "positive";
       else this.stateColor = "dark";
     },
@@ -72,7 +64,6 @@ export default {
       else return (this.stateColor = "dark");
     }
   },
-
   mounted() {
     this.checkLight();
   }
@@ -85,7 +76,6 @@ export default {
   left: -50%;
   transform: translate(34%, -215%);
   pointer-events: none;
-
   .light-name {
     position: absolute;
     text-align: center;
@@ -93,7 +83,6 @@ export default {
     width: 100%;
     left: -34%;
     top: 130%;
-
     h6 {
       font-family: "Roboto Mono";
       font-size: 70%;
@@ -102,7 +91,6 @@ export default {
       user-select: none;
     }
   }
-
   .btn {
     pointer-events: auto;
   }
