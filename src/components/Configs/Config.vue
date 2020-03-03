@@ -1,10 +1,5 @@
 <template>
-  <q-drawer
-    v-model="drawerState"
-    content-class="config-drawer"
-    dark
-    :width="200"
-  >
+  <q-drawer v-model="drawerState" content-class="config-drawer" dark :width="200">
     <q-list>
       <q-item>
         <q-toggle
@@ -30,17 +25,13 @@
         </q-item-section>
       </q-item>
 
-      <q-item
-        clickable
-        @click="editGroups = true"
-        :class="{ 'no-gateway': !gatewayFound }"
-      >
+      <q-item clickable @click="editGroups = true" :class="{ 'no-gateway': !gatewayFound }">
         <q-item-section avatar>
           <q-icon :name="icons['lightgroup']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Groups</q-item-label>
-          <groups-config :edit-groups="editGroups" />
+          <groups-config :edit-groups="editGroups" @closeGroupsEdit="closeGroupsEdit" />
         </q-item-section>
       </q-item>
 
@@ -59,11 +50,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item
-        clickable
-        @click="editGateway = true"
-        :class="{ 'no-gateway': !gatewayFound }"
-      >
+      <q-item clickable @click="editGateway = true" :class="{ 'no-gateway': !gatewayFound }">
         <q-item-section avatar>
           <q-icon :name="icons['gateway']" />
         </q-item-section>
@@ -77,12 +64,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item
-        clickable
-        tag="a"
-        target="_blank"
-        href="https://github.com/vsvirins/Beebulb"
-      >
+      <q-item clickable tag="a" target="_blank" href="https://github.com/vsvirins/Beebulb">
         <q-item-section avatar>
           <q-icon :name="icons['github']" />
         </q-item-section>
@@ -95,8 +77,8 @@
 </template>
 
 <script>
-import GroupsConfig from './GroupsConfig.vue';
-import GatewayConfig from './GatewayConfig.vue';
+import GroupsConfig from "./GroupsConfig.vue";
+import GatewayConfig from "./GatewayConfig.vue";
 import {
   mdiGithubCircle,
   mdiLightbulbOutline,
@@ -104,17 +86,17 @@ import {
   mdiAccessPoint,
   mdiPowerSleep,
   mdiPaletteOutline
-} from '@mdi/js';
-import { mapGetters } from 'vuex';
+} from "@mdi/js";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Config',
+  name: "Config",
 
-  props: ['drawer-open'],
+  props: ["drawer-open"],
 
   components: {
-    'groups-config': GroupsConfig,
-    'gateway-config': GatewayConfig
+    "groups-config": GroupsConfig,
+    "gateway-config": GatewayConfig
   },
 
   watch: {
@@ -123,10 +105,10 @@ export default {
       else this.drawerState = false;
     },
     drawerState() {
-      if (!this.drawerState) this.$emit('drawer-close', this.drawerState);
+      if (!this.drawerState) this.$emit("drawer-close", this.drawerState);
     },
     darkMode() {
-      this.$emit('view-mode', this.darkMode);
+      this.$emit("view-mode", this.darkMode);
     }
   },
 
@@ -148,19 +130,22 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['gatewayFound'])
+    ...mapGetters(["gatewayFound"])
   },
 
   methods: {
     closeGatewayEdit() {
       this.editGateway = false;
+    },
+    closeGroupsEdit() {
+      this.editGroups = false;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/swatch';
+@import "../../styles/swatch";
 
 .config-drawer {
   background: $secondary-dark;

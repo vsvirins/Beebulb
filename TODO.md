@@ -43,8 +43,8 @@
 
 - [x] GroupsConfig dialog
 - [x] New group
-- [ ] Remove group
-- [ ] Rename group
+- [x] Remove group
+- [x] Rename group
 - [ ] Rearrange groups
 
 ###### Presets

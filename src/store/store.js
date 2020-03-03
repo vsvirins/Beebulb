@@ -156,6 +156,20 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
+    },
+    async changeGroupNames(task, { groupNames }) {
+      try {
+        Object.keys(groupNames).forEach(async group => {
+          if (/\S/.test(groupNames[group])) {
+            const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}`;
+            const params = `{"name": "${groupNames[group]}"}`;
+            await fetch(url, { method: "PUT", body: params });
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      await this.dispatch("getGroups");
     }
   },
 

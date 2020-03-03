@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-dialog v-model="active" persistent>
+    <q-dialog v-model="active" persistent @keydown.esc="closeGroupsEdit">
       <q-card class="group-edit-wrapper">
         <q-btn
           flat
@@ -8,13 +8,13 @@
           size="sm"
           icon="close"
           class="absolute-top-right q-ma-sm"
-          @click="active = false"
+          @click="closeGroupsEdit"
         />
         <q-card-section class="group-edit" v-for="group in groups" :key="group.id">
           <q-input
             class="group-edit-input"
             dark
-            v-model="changeGroupName[group.id]"
+            v-model="newGroupNames[group.id]"
             :placeholder="group.name"
           >
             <template v-slot:append>
@@ -30,7 +30,14 @@
         </q-card-section>
 
         <q-card-section class="add-group">
-          <q-input dark v-model="newGroupName" placeholder="New group.." @keypress.enter="addGroup">
+          <q-input
+            dark
+            autofocus
+            v-model="newGroupName"
+            placeholder="New group.."
+            @keydown.enter="addGroup"
+            @keydown.esc="closeGroupsEdit"
+          >
             <template v-slot:prepend>
               <q-icon :name="icons['lightGroup']" />
             </template>
@@ -41,7 +48,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="text-positive">
-          <q-btn flat label="Save" @click="active = !active" />
+          <q-btn flat label="Save" @click="updateGroupNames" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -62,7 +69,7 @@ export default {
   data() {
     return {
       active: false,
-      changeGroupName: {},
+      newGroupNames: {},
       newGroupName: "",
       icons: {
         addGroup: mdiPlus,
@@ -77,11 +84,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["addNewGroup", "removeGroup"]),
+    ...mapActions(["addNewGroup", "removeGroup", "changeGroupNames"]),
     addGroup() {
       const groupName = this.newGroupName;
       this.addNewGroup({ name: groupName });
       this.newGroupName = "";
+    },
+    updateGroupNames() {
+      Object.entries(this.newGroupNames).length === 0 &&
+      this.newGroupNames.constructor === Object
+        ? this.closeGroupsEdit()
+        : (this.changeGroupNames({ groupNames: this.newGroupNames }),
+          (this.newGroupNames = {}),
+          this.$emit("closeGroupsEdit"));
+    },
+    closeGroupsEdit() {
+      this.$emit("closeGroupsEdit");
+      this.newGroupNames = {};
     }
   }
 };
