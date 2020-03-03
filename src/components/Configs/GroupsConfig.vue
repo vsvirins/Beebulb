@@ -20,6 +20,14 @@
           />
           <q-btn class="remove-group-btn" outline round icon="remove" size="38%" />
         </q-card-section>
+        <q-card-section class="add-group">
+          <q-input dark v-model="newGroupName" placeholder="New group..">
+            <template v-slot:prepend>
+              <q-icon :name="icons['lightGroup']" />
+            </template>
+          </q-input>
+          <q-btn flat round :icon="icons['newGroupIcon']" @click="addGroup" />
+        </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Save" @click="active = !active" />
@@ -30,7 +38,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import { mdiPlus, mdiLightbulbGroupOutline } from "@mdi/js";
 export default {
   name: "GroupsConfig",
 
@@ -42,12 +51,21 @@ export default {
   data() {
     return {
       active: false,
-      address: ""
+      address: "",
+      newGroupName: "",
+      icons: { newGroupIcon: mdiPlus, lightGroup: mdiLightbulbGroupOutline }
     };
   },
   watch: {
     editGroups() {
       this.active = this.editGroups;
+    }
+  },
+  methods: {
+    ...mapActions(["addNewGroup"]),
+    addGroup() {
+      const groupName = this.newGroupName;
+      this.addNewGroup({ name: groupName });
     }
   }
 };

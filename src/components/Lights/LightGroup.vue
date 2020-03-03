@@ -4,9 +4,7 @@
       <div
         class="text-h5 non-selectable q-mx-md q-my-sm"
         style="font-family: 'Source Code Pro'; font-size: 1.2rem; font-weight: 500"
-      >
-        {{ name }}
-      </div>
+      >{{ name }}</div>
       <q-icon
         class="minimize-icon"
         size="150%"
@@ -16,31 +14,26 @@
     </q-card-section>
     <transition name="show">
       <q-card-actions class="knobs" align="around" v-if="show">
-        <knob
-          v-for="light in lights"
-          :key="light"
-          :light="light"
-          :show="show"
-        />
+        <knob v-for="light in lights" :key="light" :light="light" :show="show" />
       </q-card-actions>
     </transition>
   </q-card>
 </template>
 
 <script>
-import Knob from './Knob.vue';
-import { mdiChevronUp } from '@mdi/js';
+import Knob from "./Knob.vue";
+import { mdiChevronUp } from "@mdi/js";
 
 //:style="{top: position + 'px'}"
 
 export default {
-  name: 'LightGroup',
+  name: "LightGroup",
 
   components: {
     knob: Knob
   },
 
-  props: ['group-lights', 'group-name', 'group-id'],
+  props: ["group-lights", "group-name", "group-id"],
 
   data() {
     return {
@@ -58,10 +51,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/swatch';
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:900&display=swap');
+@import "../../styles/swatch";
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:900&display=swap");
 
 .light-group {
+  ::-webkit-scrollbar {
+    display: none;
+  }
   position: relative;
   order: 0;
   box-shadow: none;

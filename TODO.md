@@ -41,8 +41,8 @@
 ###### Groups
 ---
 
-- [ ] GroupsConfig dialog
-- [ ] New group
+- [x] GroupsConfig dialog
+- [x] New group
 - [ ] Remove group
 - [ ] Rename group
 - [ ] Rearrange groups
