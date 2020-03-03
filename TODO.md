@@ -11,13 +11,15 @@
 ### General
 
 - [x] Toggle all lights on/off
-- [ ] Check if all lights are off/on
+- [ ] Check if all lights are off/on 
 - [ ] Detect dark mode
 - [ ] Make light mode look good
 - [ ] User change background?
 - [ ] Modulize store
 - [ ] Hack knob / create new knob (fix 0-max brightness jump)
 - [ ] Make presetbutton fixed
+- [ ] Some kind of communication error warning
+- [ ] Migrate to TopBar component group
 
 
 ### Bugs

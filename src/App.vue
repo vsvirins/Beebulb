@@ -12,6 +12,7 @@
             aria-label="Menu"
             icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
           />
+
           <q-toolbar-title class="non-selectable">{{
             topBarTitle
           }}</q-toolbar-title>
@@ -22,6 +23,7 @@
             color="positive"
             v-if="gatewayFound"
           />
+          <toggle-all />
         </q-toolbar>
       </q-header>
       <config
@@ -60,6 +62,7 @@ import { mapGetters } from 'vuex';
 import Config from './components/Configs/Config.vue';
 import LightGroup from './components/Lights/LightGroup.vue';
 import PresetButton from './components/PresetButton/PresetButton.vue';
+import toggleAll from './components/TopBar/ToggleAll.vue';
 
 export default {
   name: 'LayoutDefault',
@@ -67,7 +70,8 @@ export default {
   components: {
     'light-group': LightGroup,
     config: Config,
-    'preset-button': PresetButton
+    'preset-button': PresetButton,
+    'toggle-all': toggleAll
   },
 
   data() {
@@ -107,21 +111,7 @@ html {
   body {
     font-family: 'Source Code Pro';
     background-image: $bee-bg-dark;
-
     backface-visibility: hidden;
-    //background-size: 400% 400%;
-    //animation: gradient 15s ease infinite;
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
 
     .top-bar {
       background: $primary-dark;

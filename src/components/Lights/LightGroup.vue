@@ -3,7 +3,7 @@
     <q-card-section class="light-group-header" horizontal @click="show = !show">
       <div
         class="text-h5 non-selectable q-mx-md q-my-sm"
-        style="font-family: 'Source Code Pro'; font-size: 1.4rem; font-weight: 700"
+        style="font-family: 'Source Code Pro'; font-size: 1.2rem; font-weight: 500"
       >
         {{ name }}
       </div>
