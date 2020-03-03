@@ -14,22 +14,33 @@
           <q-input
             class="group-edit-input"
             dark
-            borderless
-            v-model="address"
+            v-model="changeGroupName[group.id]"
             :placeholder="group.name"
-          />
-          <q-btn class="remove-group-btn" outline round icon="remove" size="38%" />
+          >
+            <template v-slot:append>
+              <q-btn
+                flat
+                round
+                :icon="icons['removeGroup']"
+                size="sm"
+                @click="removeGroup({id: group.id})"
+              />
+            </template>
+          </q-input>
         </q-card-section>
+
         <q-card-section class="add-group">
-          <q-input dark v-model="newGroupName" placeholder="New group..">
+          <q-input dark v-model="newGroupName" placeholder="New group.." @keypress.enter="addGroup">
             <template v-slot:prepend>
               <q-icon :name="icons['lightGroup']" />
             </template>
+            <template v-slot:append>
+              <q-btn flat round size="sm" :icon="icons['addGroup']" @click="addGroup" />
+            </template>
           </q-input>
-          <q-btn flat round :icon="icons['newGroupIcon']" @click="addGroup" />
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary">
+        <q-card-actions align="right" class="text-positive">
           <q-btn flat label="Save" @click="active = !active" />
         </q-card-actions>
       </q-card>
@@ -39,7 +50,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { mdiPlus, mdiLightbulbGroupOutline } from "@mdi/js";
+import { mdiPlus, mdiMinus, mdiLightbulbGroupOutline } from "@mdi/js";
 export default {
   name: "GroupsConfig",
 
@@ -51,9 +62,13 @@ export default {
   data() {
     return {
       active: false,
-      address: "",
+      changeGroupName: {},
       newGroupName: "",
-      icons: { newGroupIcon: mdiPlus, lightGroup: mdiLightbulbGroupOutline }
+      icons: {
+        addGroup: mdiPlus,
+        removeGroup: mdiMinus,
+        lightGroup: mdiLightbulbGroupOutline
+      }
     };
   },
   watch: {
@@ -62,10 +77,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["addNewGroup"]),
+    ...mapActions(["addNewGroup", "removeGroup"]),
     addGroup() {
       const groupName = this.newGroupName;
       this.addNewGroup({ name: groupName });
+      this.newGroupName = "";
     }
   }
 };
@@ -73,7 +89,7 @@ export default {
 
 <style lang="scss" scoped>
 .group-edit-wrapper {
-  padding: 2.5rem;
+  padding: 2rem;
   background: #222;
   color: white;
   width: 30rem;
@@ -82,12 +98,6 @@ export default {
   .group-edit {
     flex-direction: row;
     .group-edit-input {
-    }
-
-    .remove-group-btn {
-      position: absolute;
-      right: 10%;
-      top: 43%;
     }
   }
 }

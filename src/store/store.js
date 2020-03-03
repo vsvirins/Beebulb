@@ -147,6 +147,15 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
+    },
+    async removeGroup(task, { id }) {
+      const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${id}`;
+      try {
+        await fetch(url, { method: "DELETE" });
+        await this.dispatch("getGroups");
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
 
