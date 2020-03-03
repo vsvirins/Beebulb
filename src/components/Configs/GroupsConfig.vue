@@ -87,8 +87,14 @@ export default {
     ...mapActions(["addNewGroup", "removeGroup", "changeGroupNames"]),
     addGroup() {
       const groupName = this.newGroupName;
+
       this.addNewGroup({ name: groupName });
       this.newGroupName = "";
+
+      /* 
+            existingGroupNames.includes(groupName)
+        ? (this.newGroupName = "")
+        : (this.addNewGroup({ name: groupName }), (this.newGroupName = "")); */
     },
     updateGroupNames() {
       Object.entries(this.newGroupNames).length === 0 &&

@@ -10,18 +10,13 @@
         />
       </q-item>
       <q-space />
-      <q-item
-        clickable
-        tag="a"
-        target="_blank"
-        href="https://chat.quasar.dev"
-        :class="{ 'no-gateway': !gatewayFound }"
-      >
+      <q-item clickable @click="editLights = true" :class="{ 'no-gateway': !gatewayFound }">
         <q-item-section avatar>
           <q-icon :name="icons['light']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Lights</q-item-label>
+          <lights-config :edit-lights="editLights" @closeLightsEdit="closeLightsEdit" />
         </q-item-section>
       </q-item>
 
@@ -79,6 +74,7 @@
 <script>
 import GroupsConfig from "./GroupsConfig.vue";
 import GatewayConfig from "./GatewayConfig.vue";
+import LightsConfig from "./LightsConfig.vue";
 import {
   mdiGithubCircle,
   mdiLightbulbOutline,
@@ -96,7 +92,8 @@ export default {
 
   components: {
     "groups-config": GroupsConfig,
-    "gateway-config": GatewayConfig
+    "gateway-config": GatewayConfig,
+    "lights-config": LightsConfig
   },
 
   watch: {
@@ -117,6 +114,7 @@ export default {
       drawerState: false,
       darkMode: true,
       editGroups: false,
+      editLights: false,
       editGateway: false,
       icons: {
         github: mdiGithubCircle,
@@ -139,6 +137,9 @@ export default {
     },
     closeGroupsEdit() {
       this.editGroups = false;
+    },
+    closeLightsEdit() {
+      this.editLights = false;
     }
   }
 };

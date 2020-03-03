@@ -34,7 +34,7 @@
 ###### Lights
 ---
 
-- [ ] LightConfig dialog
+- [x] LightConfig dialog
 - [ ] Add light to group
 - [ ] Remove light from group
 
@@ -45,6 +45,7 @@
 - [x] New group
 - [x] Remove group
 - [x] Rename group
+- [ ] Check if groupname exsist before adding new group
 - [ ] Rearrange groups
 
 ###### Presets

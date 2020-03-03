@@ -198,6 +198,9 @@ export default new Vuex.Store({
     },
     groups: state => {
       return state.groups;
+    },
+    lights: state => {
+      return state.lights;
     }
   },
   modules: {}
