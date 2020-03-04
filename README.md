@@ -1,29 +1,25 @@
 # Beebulb
 
-## Project setup
+**Live Demo**
 
-```
-npm install
-```
+Beebulb is a lightweight and responsive progressive webapplication..
 
-### Compiles and hot-reloads for development
+Beebulb leverages the deCONZ REST API to manage and communicate with ZigBee-devices.
+<br>
 
-```
-npm run serve
-```
+**Supported Devices**
+https://github.com/dresden-elektronik/deconz-rest-plugin/wiki/Supported-Devices
 
-### Compiles and minifies for production
+## Installation
 
-```
-npm run build
-```
+### Requirements
 
-### Lints and fixes files
+- ConBee / ConBee II / RaspBee and Raspberry Pi
+- DeCONZ REST API
+- Docker
 
-```
-npm run lint
-```
+### Hosting
 
-### Customize configuration
+> docker compose -p 5000
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## License and credits

@@ -1,25 +1,25 @@
 <template>
   <div class="preset-wrapper">
-    <q-fab outline color="amber-1" :icon="presetIcon" direction="up">
+    <q-fab
+      outline
+      class="fixed-bottom-right q-ma-md"
+      color="amber-1"
+      :icon="presetIcon"
+      direction="up"
+    >
       <q-fab-action color="amber" text-color="black" icon="alarm" />
-      <q-fab-action
-        flat
-        color="white"
-        text-color="grey-2"
-        icon="add"
-        @click="newPreset = true"
-      />
+      <q-fab-action flat color="white" text-color="grey-2" icon="add" @click="newPreset = true" />
       <new-preset :add-preset="newPreset" @closeWindow="newPreset = false" />
     </q-fab>
   </div>
 </template>
 
 <script>
-import NewPreset from './NewPreset.vue';
-import { mdiPaletteOutline } from '@mdi/js';
+import NewPreset from "./NewPreset.vue";
+import { mdiPaletteOutline } from "@mdi/js";
 
 export default {
-  name: 'PresetButton',
+  name: "PresetButton",
   data() {
     return {
       newPreset: false,
@@ -27,7 +27,7 @@ export default {
     };
   },
   components: {
-    'new-preset': NewPreset
+    "new-preset": NewPreset
   }
 };
 </script>

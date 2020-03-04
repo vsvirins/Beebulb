@@ -169,7 +169,29 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
-      await this.dispatch("getGroups");
+    },
+
+    async setNewLightOrder(task, { order }) {
+      //const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}`;
+      //const params = `{"lights":${lights}}`;
+      try {
+        this.dispatch("removeAllLights");
+        for (let group in order) {
+          const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}`;
+          let lights = `["${Object.values(order[group]).join('","')}"]`;
+          const params = `{"lights":${lights}}`;
+          await fetch(url, { method: "PUT", body: params });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    removeAllLights() {
+      Object.keys(this.state.lights).forEach(async light => {
+        const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/lights/${light}/groups`;
+        await fetch(url, { method: "DELETE" });
+      });
     }
   },
 
@@ -201,6 +223,14 @@ export default new Vuex.Store({
     },
     lights: state => {
       return state.lights;
+    },
+    groupLights: state => {
+      let groupLights = {};
+      let index = Object.keys(state.groups);
+      for (index in state.groups) {
+        groupLights[index] = state.groups[index].lights;
+      }
+      return groupLights;
     }
   },
   modules: {}

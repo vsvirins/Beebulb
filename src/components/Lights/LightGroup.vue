@@ -4,7 +4,9 @@
       <div
         class="text-h5 non-selectable q-mx-md q-my-sm"
         style="font-family: 'Source Code Pro'; font-size: 1.2rem; font-weight: 500"
-      >{{ name }}</div>
+      >
+        {{ name }}
+      </div>
       <q-icon
         class="minimize-icon"
         size="150%"
@@ -14,7 +16,12 @@
     </q-card-section>
     <transition name="show">
       <q-card-actions class="knobs" align="around" v-if="show">
-        <knob v-for="light in lights" :key="light" :light="light" :show="show" />
+        <knob
+          v-for="light in lights"
+          :key="light"
+          :light="light"
+          :show="show"
+        />
       </q-card-actions>
     </transition>
   </q-card>

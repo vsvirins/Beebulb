@@ -17,7 +17,7 @@
 - [ ] User change background?
 - [ ] Modulize store
 - [ ] Hack knob / create new knob (fix 0-max brightness jump)
-- [ ] Make presetbutton fixed
+- [x] Make presetbutton fixed
 - [ ] Some kind of communication error warning
 - [ ] Migrate to TopBar component group
 
@@ -35,8 +35,8 @@
 ---
 
 - [x] LightConfig dialog
-- [ ] Add light to group
-- [ ] Remove light from group
+- [x] Add light to group
+- [x] Remove light from group
 
 ###### Groups
 ---
@@ -73,7 +73,7 @@
 - [ ] Demo app, sanbox or site?
 
 
-### Flask+SQLite backend
+### Express+SQLite backend
 
 - [ ] Store encrypted deCONZ API key
 - [ ] Get decrypted deCONZ API key
