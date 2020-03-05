@@ -15,7 +15,7 @@
       />
     </q-card-section>
     <transition name="show">
-      <q-card-actions class="knobs" align="around" v-if="show">
+      <q-card-actions class="knobs" v-if="show">
         <knob
           v-for="light in lights"
           :key="light"
@@ -47,7 +47,6 @@ export default {
       lights: this.groupLights,
       name: this.groupName,
       id: this.groupId,
-      position: 0,
       show: true,
       minimizeIcon: mdiChevronUp
     };
@@ -65,11 +64,10 @@ export default {
   ::-webkit-scrollbar {
     display: none;
   }
-  position: relative;
   order: 0;
   box-shadow: none;
   border-radius: 0px;
-  border: 1px solid rgb(37, 37, 37);
+  //border: 1px solid rgb(37, 37, 37);
 
   .light-group-header {
     background: rgb(46, 46, 46);
@@ -111,15 +109,12 @@ export default {
   .knobs {
     background: rgb(59, 59, 59);
     color: rgb(235, 235, 235);
-    align-self: stretch;
     padding: 0;
     padding-top: 2em;
-    justify-content: space-evenly;
-    overflow-x: scroll;
+    justify-content: flex-start;
     overflow-y: hidden;
     flex-wrap: nowrap;
     height: 12em;
-    //bg-grey-9 text-white
   }
 
   .show-enter-active {

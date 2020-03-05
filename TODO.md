@@ -18,15 +18,16 @@
 - [ ] Modulize store
 - [ ] Hack knob / create new knob (fix 0-max brightness jump)
 - [x] Make presetbutton fixed
-- [ ] Some kind of communication error warning
+- [x] Some kind of communication error warning
 - [ ] Migrate to TopBar component group
 
 
 ### Bugs
 
 - [x] Fix state problem when closing config menu
-- [ ] Remove buggy draggable from groups
+- [x] Remove buggy draggable from groups
 - [ ] Fix compatibility issues with chrome android
+- [ ] Fix unreachable icon overflow
 
 
 ### Configs
@@ -37,6 +38,10 @@
 - [x] LightConfig dialog
 - [x] Add light to group
 - [x] Remove light from group
+- [ ] Scan for new lights
+- [ ] Identify new lights
+- [ ] Rename new lights
+- [ ] Assign new lights to group
 
 ###### Groups
 ---
@@ -64,7 +69,7 @@
 - [x] 'Gateway not found'
 - [x] Gateway info dialog
 - [x] Change gateway name
-- [ ] Gateway auth app
+- [ ] Gateway auth new app
 
 
 ### Live demo
@@ -77,6 +82,6 @@
 
 - [ ] Store encrypted deCONZ API key
 - [ ] Get decrypted deCONZ API key
-- [ ] Save preset
+- [ ] Save presets
 - [ ] Save group order
 - [ ] Containerize
