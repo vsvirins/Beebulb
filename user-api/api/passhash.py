@@ -1,6 +1,6 @@
 from hashlib import pbkdf2_hmac
-from os import urandom
-from api.models import User, user_schema
+import os
+from .models import User, user_schema
 
 
 def generate_password(password):
