@@ -1,60 +1,58 @@
 <template>
-  <body :class="{ 'light-mode': !darkMode }">
-    <q-layout view="hHh Lpr lff">
-      <q-header class="top-bar">
-        <q-toolbar>
-          <q-btn
-            dense
-            round
-            flat
-            class="config-btn"
-            @click="drawerOpen = !drawerOpen"
-            aria-label="Menu"
-            icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
-          />
+<body :class="{ 'light-mode': !darkMode }">
+  <q-layout view="hHh Lpr lff">
+    <q-header class="top-bar">
+      <q-toolbar>
+        <q-btn
+          dense
+          round
+          flat
+          class="config-btn"
+          @click="drawerOpen = !drawerOpen"
+          aria-label="Menu"
+          icon="img:https://image.flaticon.com/icons/svg/175/175098.svg"
+        />
 
-          <q-toolbar-title class="top-bar-title non-selectable">
-            {{ topBarTitle }}
-          </q-toolbar-title>
-          <q-space />
-          <q-toggle
-            icon="power_settings_new"
-            v-model="toggleAll"
-            color="positive"
-            v-if="gatewayFound"
-          />
-          <toggle-all />
-        </q-toolbar>
-      </q-header>
-      <config
-        :drawer-open="drawerOpen"
-        @view-mode="darkMode = $event"
-        @drawer-close="drawerOpen = $event"
-      />
+        <q-toolbar-title class="top-bar-title non-selectable">{{ topBarTitle }}</q-toolbar-title>
+        <q-space />
+        <q-toggle
+          icon="power_settings_new"
+          v-model="toggleAll"
+          color="positive"
+          v-if="gatewayFound"
+        />
+        <toggle-all />
+      </q-toolbar>
+    </q-header>
+    <config
+      :drawer-open="drawerOpen"
+      @view-mode="darkMode = $event"
+      @drawer-close="drawerOpen = $event"
+    />
 
-      <q-page-container @click="drawerOpen = false" class="flex-center">
-        <div class="group-wrapper" v-if="gatewayFound">
-          <light-group
-            v-for="group in groups"
-            :key="group.name"
-            :group-lights="group.lights"
-            :group-name="group.name"
-            :group-id="group.id"
-          />
-        </div>
-        <div class="no-gateway" v-else>
-          <q-btn
-            outline
-            icon="error_outline"
-            label="Gateway not found :("
-            text-color="white"
-            class="q-my-lg"
-          />
-        </div>
-        <preset-button v-if="gatewayFound" />
-      </q-page-container>
-    </q-layout>
-  </body>
+    <q-page-container @click="drawerOpen = false" class="flex-center">
+      <div class="group-wrapper" v-if="gatewayFound">
+        <light-group
+          v-for="group in groups"
+          :key="group.name"
+          :group-lights="group.lights"
+          :group-name="group.name"
+          :group-id="group.id"
+        />
+      </div>
+      <div class="no-gateway" v-else>
+        <q-btn
+          outline
+          icon="error_outline"
+          label="Gateway not found :("
+          text-color="white"
+          class="q-my-lg"
+        />
+      </div>
+      <preset-button v-if="gatewayFound" />
+    </q-page-container>
+  </q-layout>
+</body>
 </template>
 
 <script>
@@ -142,6 +140,9 @@ html {
   .light-mode {
     html {
       --q-color-dark: white;
+      body {
+        background-image: $bee-bg-light;
+      }
     }
     .top-bar {
       background: $secondary-light;

@@ -10,6 +10,7 @@
       @click="toggle"
       v-model="lightState"
       style="weight: 900; color: green"
+      :disable="!reachable"
     />
     <div class="light-name">
       <h6>{{ lightName }}</h6>
@@ -18,24 +19,24 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { mdiHexagonOutline } from '@mdi/js';
+import { mapActions } from "vuex";
+import { mdiHexagonOutline } from "@mdi/js";
 
 export default {
-  name: 'LightSwitch',
-  props: ['btn-id', 'is-on'],
+  name: "LightSwitch",
+  props: ["btn-id", "is-on", "reachable"],
   data() {
     return {
       id: this.btnId,
-      lightState: '',
-      stateColor: '',
+      lightState: "",
+      stateColor: "",
       hexagon: mdiHexagonOutline
     };
   },
   watch: {
     isOn() {
-      if (this.isOn) this.stateColor = 'positive';
-      else this.stateColor = 'dark';
+      if (this.isOn) this.stateColor = "positive";
+      else this.stateColor = "dark";
     }
   },
   computed: {
@@ -44,28 +45,28 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['lightOnOff', 'getLightState']),
+    ...mapActions(["lightOnOff", "getLightState"]),
     async toggle() {
       const state = await this.getLightState({ id: this.id });
       this.lightOnOff({ state, id: this.id });
       this.switchColor(state);
-      if (!state) this.$emit('lightsOn', 200);
+      if (!state) this.$emit("lightsOn", 200);
     },
     switchColor(state) {
-      if (!state) this.stateColor = 'positive';
+      if (!state) this.stateColor = "positive";
       else
-        (this.stateColor = 'dark'),
-          this.$emit('lightsOff'),
+        (this.stateColor = "dark"),
+          this.$emit("lightsOff"),
           (this.lightState = !state);
     },
     async checkLight() {
       this.lightState = await this.getLightState({ id: this.id });
-      if (this.lightState) this.stateColor = 'positive';
-      else this.stateColor = 'dark';
+      if (this.lightState) this.stateColor = "positive";
+      else this.stateColor = "dark";
     },
     lightStatus() {
-      if (this.isOn) return (this.stateColor = 'positive');
-      else return (this.stateColor = 'dark');
+      if (this.isOn) return (this.stateColor = "positive");
+      else return (this.stateColor = "dark");
     }
   },
   mounted() {
@@ -75,7 +76,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap");
 .btn-wrapper {
   left: -50%;
   transform: translate(31.3%, -182%);
@@ -88,7 +89,7 @@ export default {
     left: -31%;
     top: 110%;
     h6 {
-      font-family: 'Source Code Pro';
+      font-family: "Source Code Pro";
       font-size: 80%;
       color: rgba(243, 243, 243, 0.61);
       pointer-events: none;

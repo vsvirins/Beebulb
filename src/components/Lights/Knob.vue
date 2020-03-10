@@ -18,6 +18,7 @@
     <light-switch
       :btn-id="id"
       :is-on="isOn"
+      :reachable="reachable"
       @lightsOff="turnOff"
       @lightsOn="turnOn"
     />
