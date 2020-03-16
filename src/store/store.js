@@ -184,7 +184,7 @@ export default new Vuex.Store({
     },
 
     async registerNewUser(task, { username, password }) {
-      const url = "http://localhost:8080/register";
+      const url = "http://192.168.10.110:8080/register";
       const params = JSON.stringify({ username: username, password: password });
 
       try {
@@ -203,7 +203,7 @@ export default new Vuex.Store({
     },
 
     async generateNewKey(task, { username }) {
-      const url = "http://localhost:8080/generate_key";
+      const url = "http://192.168.10.110:8080/generate_key";
       const params = JSON.stringify({
         username: username,
         address: this.getters.gatewayAdress
@@ -227,7 +227,7 @@ export default new Vuex.Store({
     },
 
     async loginUser(task, { username, password }) {
-      const url = "http://localhost:8080/login";
+      const url = "http://192.168.10.110:8080/login";
       const params = JSON.stringify({ username: username, password: password });
 
       try {
@@ -240,7 +240,8 @@ export default new Vuex.Store({
         });
         const recieved = await response.json();
         return recieved.valid_login === true
-          ? (this.dispatch("discoverGateway")
+          ? (this.commit("SET_KEY", recieved.key),
+            this.dispatch("discoverGateway")
               .then(() => this.dispatch("getLights"))
               .then(() => this.dispatch("getGroups"))
               .catch(false),

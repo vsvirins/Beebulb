@@ -84,7 +84,7 @@ export default {
                 )
               : (this.errorMsg = msg);
           })
-        : (this.errorMsg = "I'm not good at guessing.");
+        : (this.errorMsg = "Invalid username or password.");
     },
     login() {
       const login = () =>
