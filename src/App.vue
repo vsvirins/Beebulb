@@ -1,5 +1,6 @@
 <template>
 <body :class="{ 'light-mode': !darkMode }">
+  <login :logged-in="loggedIn" @user-registred="loggedIn = $event" />
   <q-layout view="hHh Lpr lff">
     <q-header class="top-bar">
       <q-toolbar>
@@ -61,6 +62,7 @@ import Config from "./components/Configs/Config.vue";
 import LightGroup from "./components/Lights/LightGroup.vue";
 import PresetButton from "./components/PresetButton/PresetButton.vue";
 import toggleAll from "./components/TopBar/ToggleAll.vue";
+import Login from "./components/Login/Login.vue";
 
 export default {
   name: "LayoutDefault",
@@ -69,14 +71,16 @@ export default {
     "light-group": LightGroup,
     config: Config,
     "preset-button": PresetButton,
-    "toggle-all": toggleAll
+    "toggle-all": toggleAll,
+    login: Login
   },
 
   data() {
     return {
       drawerOpen: false,
       toggleAll: true,
-      darkMode: true
+      darkMode: true,
+      loggedIn: false
     };
   },
 

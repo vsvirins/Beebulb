@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     gateway: { 0: { name: "" } },
-    key: "A2D4D78CA0",
+    key: "", //A2D4D78CA0
     groups: [],
     lights: []
   },
@@ -41,17 +41,6 @@ export default new Vuex.Store({
       }
     },
 
-    async acquireKey(task) {
-      const url = `http://$${this.getters.gatewayAdress}/api`;
-      const params = '{"devicetype": "PWA"}';
-      try {
-        const response = await fetch(url, { method: "POST", body: params });
-        const data = await response.json();
-        return task.commit("SET_KEY", data);
-      } catch (err) {
-        console.log(err);
-      }
-    },
     async getGroups(task) {
       const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups`;
       try {
@@ -192,6 +181,74 @@ export default new Vuex.Store({
         const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/lights/${light}/groups`;
         await fetch(url, { method: "DELETE" });
       });
+    },
+
+    async registerNewUser(task, { username, password }) {
+      const url = "http://localhost:8080/register";
+      const params = JSON.stringify({ username: username, password: password });
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const recieved = await response.json();
+        return recieved.msg;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async generateNewKey(task, { username }) {
+      const url = "http://localhost:8080/generate_key";
+      const params = JSON.stringify({
+        username: username,
+        address: this.getters.gatewayAdress
+      });
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const key = await response.json();
+        return key.msg === "Gateway is locked"
+          ? false
+          : task.commit("SET_KEY", key.msg);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async loginUser(task, { username, password }) {
+      const url = "http://localhost:8080/login";
+      const params = JSON.stringify({ username: username, password: password });
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const recieved = await response.json();
+        return recieved.valid_login === true
+          ? (this.dispatch("discoverGateway")
+              .then(() => this.dispatch("getLights"))
+              .then(() => this.dispatch("getGroups"))
+              .catch(false),
+            recieved.valid_login)
+          : recieved.valid_login;
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
 

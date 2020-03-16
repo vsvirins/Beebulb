@@ -146,6 +146,7 @@ yarn-error.log
 *.mdb
 *.pdb
 *.sqlite3
+*.sqlite
 
 ### Flask ###
 instance/*
