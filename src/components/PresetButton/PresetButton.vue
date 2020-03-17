@@ -2,12 +2,23 @@
   <div class="preset-wrapper">
     <q-fab
       outline
+      unelevated
       class="fixed-bottom-right q-ma-md"
       color="amber-1"
       :icon="presetIcon"
       direction="up"
+      vertical-actions-align="right"
     >
-      <q-fab-action color="amber" text-color="black" icon="alarm" />
+      <div v-if="presets.length !== 0">
+        <q-fab-action
+          v-for="preset in presets"
+          :key="presets[preset]"
+          :style="{ background: preset[1].bg, color: preset[1].color }"
+          :icon="preset[1].icon"
+          :label="preset[1].name"
+          label-position="left"
+        />
+      </div>
       <q-fab-action flat color="white" text-color="grey-2" icon="add" @click="newPreset = true" />
       <new-preset :add-preset="newPreset" @closeWindow="newPreset = false" />
     </q-fab>
@@ -16,18 +27,28 @@
 
 <script>
 import NewPreset from "./NewPreset.vue";
-import { mdiPaletteOutline } from "@mdi/js";
+import { mdiPaletteOutline, mdiAirballoon, mdiArch, mdiAtom } from "@mdi/js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "PresetButton",
   data() {
     return {
       newPreset: false,
-      presetIcon: mdiPaletteOutline
+      presetIcon: mdiPaletteOutline,
+      icons: {
+        mdiAirballoon: mdiAirballoon,
+        mdiArch: mdiArch,
+        mdiAtom: mdiAtom
+      }
     };
   },
   components: {
     "new-preset": NewPreset
+  },
+
+  computed: {
+    ...mapGetters(["presets"])
   }
 };
 </script>

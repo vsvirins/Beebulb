@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify, request
-from .models import db, User
+from .models import db, User, Preset
 from .passhash import generate_password, verify_password
 from flask_cors import CORS
+from sqlalchemy.orm.session import make_transient_to_detached
 import requests
+import json
 
 routes = Blueprint('routes', __name__)
 CORS(routes)
@@ -19,14 +21,18 @@ def delete_user(username):
     db.session.commit()
 
 
+def check_if_exists(username):
+    return db.session.query(db.exists().where(
+        User.username == username)).scalar()
+
+
 @routes.route('/register', methods=['POST'])
 def new_user():
     request_data = request.get_json()
     username = request_data['username']
     password = request_data['password']
 
-    exists = db.session.query(db.exists().where(
-        User.username == username)).scalar()
+    exists = check_if_exists(username)
 
     if exists:
         return jsonify({'msg': 'Username already exists.'})
@@ -56,8 +62,8 @@ def login():
     username = request_data['username']
     password = request_data['password']
 
-    exists = db.session.query(db.exists().where(
-        User.username == username)).scalar()
+    exists = check_if_exists(username)
+
     if not exists:
         return jsonify({'msg': "username doesn't exists"})
     elif username == '' and password == '':
@@ -69,7 +75,7 @@ def login():
 
     else:
         valid_login = verify_password(username, password)
-        if(valid_login == True):
+        if(valid_login):
             key = get_key(username)
             return jsonify({'valid_login': valid_login, 'key': key})
         else:
@@ -98,3 +104,31 @@ def generate_key():
             return jsonify({'msg': 'Gateway is locked'})
     except requests.exceptions.RequestException as e:
         print(e)
+
+
+@routes.route('/store_preset', methods=['POST'])
+def store_preset():
+    request_data = request.get_json()
+    preset = request_data['preset']
+    username = request_data['username']
+
+    new_preset = Preset(preset=preset, owner=username)
+    db.session.add(new_preset)
+    db.session.commit()
+
+    return jsonify({'msg': 'success'})
+
+
+@routes.route('/get_presets', methods=['POST'])
+def get_presets():
+    request_data = request.get_json()
+    username = request_data['username']
+    presets = db.session.query(Preset).filter_by(owner=username).all()
+
+    presets_collection = {}
+    count = 0
+    for preset in presets:
+        presets_collection[count] = preset.preset
+        count += 1
+
+    return jsonify(presets_collection)

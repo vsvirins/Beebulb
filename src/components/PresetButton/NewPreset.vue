@@ -6,12 +6,12 @@
           <q-btn
             round
             class="q-ma-md"
-            :color="iconColor"
+            :style="{ background: iconBg, color: iconColor }"
             size="lg"
-            :icon="icon"
+            :icon="presetIcon"
             @click="pickIcon = true"
           />
-          <div class="text-h3 q-my-lg q-mr-md">{{ name }}</div>
+          <div class="text-h5 q-my-lg q-mr-md">{{ name }}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -29,25 +29,31 @@
         </q-card-section>
 
         <q-card-section>
-          <q-btn round size="sm" color="amber-4" class="q-ma-sm" @click="iconColor = 'amber-4'" />
-          <q-btn
-            round
-            size="sm"
-            color="light-green-6"
-            class="q-ma-sm"
-            @click="iconColor = 'light-green-6'"
+          <q-color
+            @input="changeIconColor ? iconBg = $event : iconColor = $event "
+            :value="changeIconColor ? iconBg: iconColor "
+            flat
+            no-header
+            no-footer
+            dark
           />
           <q-btn
             round
             size="sm"
-            color="deep-purple-8"
+            :style="{ background: 'white', color: '#333' }"
             class="q-ma-sm"
-            @click="iconColor = 'deep-purple-8'"
+            :icon="presetIcon"
+            @click="changeIconColor = true"
           />
-          <q-btn round size="sm" color="teal-3" class="q-ma-sm" @click="iconColor = 'teal-3'" />
-          <q-btn round size="sm" color="pink-3" class="q-ma-sm" @click="iconColor = 'pink-3'" />
-          <q-btn round size="sm" color="cyan-2" class="q-ma-sm" @click="iconColor = 'cyan-2'" />
-          <q-btn round size="sm" color="orange-8" class="q-ma-sm" @click="iconColor = 'orange-8'" />
+          <q-btn
+            flat
+            round
+            size="sm"
+            class="q-ma-sm"
+            :icon="presetIcon"
+            @click="changeIconColor = false"
+          />
+          <q-btn flat round size="sm" class="q-ma-sm" :icon="swapIcon" @click="swapColor" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-white">
@@ -59,156 +65,21 @@
             class="absolute-top-right q-ma-sm"
             @click="closeWindow"
           />
-          <q-btn flat round icon="add" @click="closeWindow" />
+          <q-btn flat round icon="add" @click="addNewPreset" />
         </q-card-actions>
       </q-card>
     </q-dialog>
     <q-dialog v-model="pickIcon">
       <q-card class="bg-dark">
-        <q-card-section class="q-pt-none">
+        <q-card-section class="q-ma-sm">
           <q-btn
             round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="looks"
-            @click="icon = 'looks'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="landscape"
-            @click="icon = 'landscape'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="local_bar"
-            @click="icon = 'local_bar'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="wb_sunny"
-            @click="icon = 'wb_sunny'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="ac_unit"
-            @click="icon = 'ac_unit'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="fitness_center"
-            @click="icon = 'fitness_center'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="spa"
-            @click="icon = 'spa'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="cake"
-            @click="icon = 'cake'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="nights_stay"
-            @click="icon = 'nights_stay'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="whatshot"
-            @click="icon = 'whatshot'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="star_border"
-            @click="icon = 'star_border'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="alarm"
-            @click="icon = 'alarm'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="assessment"
-            @click="icon = 'assessment'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="code"
-            @click="icon = 'code'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="eco"
-            @click="icon = 'eco'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="home"
-            @click="icon = 'home'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="equalizer"
-            @click="icon = 'equalizer'"
-          />
-          <q-btn
-            round
-            size="md"
-            :color="iconColor"
-            class="q-ma-md"
-            icon="games"
-            @click="icon = 'games'"
+            :style="{ background: iconBg, color: iconColor }"
+            v-for="icon in icons"
+            :key="icon"
+            :icon="icon"
+            @click="presetIcon = icon, pickIcon = false"
+            class="q-ma-sm"
           />
         </q-card-section>
       </q-card>
@@ -217,6 +88,9 @@
 </template>
 
 <script>
+import { mdiAirballoon, mdiArch, mdiAtom, mdiAutorenew } from "@mdi/js";
+import { mapActions } from "vuex";
+
 export default {
   name: "NewPreset",
   props: ["add-preset"],
@@ -230,13 +104,38 @@ export default {
       active: false,
       name: "",
       pickIcon: false,
-      icon: "edit",
-      iconColor: "amber"
+      presetIcon: "edit",
+      swapIcon: mdiAutorenew,
+      iconBg: "rgb(247,188,40)",
+      iconColor: "rgb(20,20,20)",
+      changeIconColor: true,
+      icons: {
+        mdiAirballoon: mdiAirballoon,
+        mdiArch: mdiArch,
+        mdiAtom: mdiAtom
+      }
     };
   },
   methods: {
+    ...mapActions(["createNewPreset"]),
+
     closeWindow() {
       this.$emit("closeWindow");
+    },
+    swapColor() {
+      const tempColor = this.iconBg;
+      this.iconBg = this.iconColor;
+      this.iconColor = tempColor;
+    },
+    addNewPreset() {
+      const preset = {
+        name: this.name,
+        icon: this.presetIcon,
+        bg: this.iconBg,
+        color: this.iconColor
+      };
+      this.createNewPreset({ preset: preset });
+      this.closeWindow();
     }
   }
 };

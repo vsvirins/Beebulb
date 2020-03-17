@@ -42,6 +42,7 @@
 - [ ] Identify new lights
 - [ ] Rename new lights
 - [ ] Assign new lights to group
+- [ ] Add color support
 
 ###### Groups
 ---
@@ -69,7 +70,9 @@
 - [x] 'Gateway not found'
 - [x] Gateway info dialog
 - [x] Change gateway name
-- [ ] Gateway auth new app
+- [ ] Change password promt if user not found(default: delight)
+- [ ] Auth new user(promt for password)
+- [ ] Auth new app (timed unlock)
 
 
 ### Live demo
@@ -78,10 +81,12 @@
 - [ ] Demo app, sanbox or site?
 
 
-### Express+SQLite backend
+### Flask+SQLite backend
 
-- [ ] Store encrypted deCONZ API key
-- [ ] Get decrypted deCONZ API key
+- [x] Register user
+- [x] Login user
+- [x] Store deCONZ API key
+- [x] Get deCONZ API key
 - [ ] Save presets
 - [ ] Save group order
 - [ ] Containerize

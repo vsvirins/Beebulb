@@ -1,6 +1,6 @@
 <template>
 <body :class="{ 'light-mode': !darkMode }">
-  <login :logged-in="loggedIn" @user-registred="loggedIn = $event" />
+  <login v-if="gatewayFound" :logged-in="loggedIn" @user-registred="loggedIn = $event" />
   <q-layout view="hHh Lpr lff">
     <q-header class="top-bar">
       <q-toolbar>

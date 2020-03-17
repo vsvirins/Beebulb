@@ -8,8 +8,10 @@ export default new Vuex.Store({
   state: {
     gateway: { 0: { name: "" } },
     key: "", //A2D4D78CA0
+    user: "",
     groups: [],
-    lights: []
+    lights: [],
+    presets: []
   },
   mutations: {
     SET_GATEWAY(state, gateway) {
@@ -23,6 +25,12 @@ export default new Vuex.Store({
     },
     SET_LIGHTS(state, lights) {
       state.lights = lights;
+    },
+    SET_PRESET(state, preset) {
+      state.presets = [...state.presets, preset];
+    },
+    SET_USER(state, user) {
+      state.user = user;
     }
   },
   actions: {
@@ -240,17 +248,112 @@ export default new Vuex.Store({
         });
         const recieved = await response.json();
         return recieved.valid_login === true
-          ? (this.commit("SET_KEY", recieved.key),
+          ? (task.commit("SET_KEY", recieved.key),
+            task.commit("SET_USER", username),
             this.dispatch("discoverGateway")
               .then(() => this.dispatch("getLights"))
               .then(() => this.dispatch("getGroups"))
+              .then(() => this.dispatch("getPresets"))
               .catch(false),
             recieved.valid_login)
           : recieved.valid_login;
       } catch (err) {
         console.log(err);
       }
+    },
+
+    async createNewPreset(task, { preset }) {
+      let groupPreset = {};
+      let newPreset = {};
+
+      for (let group in this.getters.groups) {
+        const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}/scenes`;
+        const params = `{"name": "${preset.name}-${group}"}`;
+
+        try {
+          const response = await fetch(url, { method: "POST", body: params });
+
+          const data = await response.json();
+          groupPreset = {
+            id: data[0].success.id,
+            groupid: group,
+            name: preset.name,
+            icon: preset.icon,
+            bg: preset.bg,
+            color: preset.color
+          };
+          newPreset = { ...newPreset, [group]: groupPreset };
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      this.dispatch("storePreset", { preset: newPreset }),
+        task.commit("SET_PRESET", newPreset);
+    },
+
+    async storePreset(task, { preset }) {
+      const url = "http://192.168.10.110:8080/store_preset";
+      const base64Preset = btoa(JSON.stringify(preset));
+      const params = JSON.stringify({
+        preset: base64Preset,
+        username: this.state.user
+      });
+
+      try {
+        await fetch(url, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async getPresets(task) {
+      const url = "http://192.168.10.110:8080/get_presets";
+      const params = JSON.stringify({
+        username: this.state.user
+      });
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const data = await response.json();
+        Object.keys(data).forEach(preset => {
+          let decodedPreset = JSON.parse(atob(data[preset]));
+          task.commit("SET_PRESET", decodedPreset);
+          decodedPreset = {};
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
+    /*     async recallPreset(task, { sceneIds } ){
+      for(let group in this.getters.groups) {
+        let count = 0;
+        const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group.id}/scenes/${sceneIds[count]}/recall`;
+        const params = { "name": preset.name }
+
+        try {
+        response = await fetch(url, { method: "POST", body: params }).then(id => {
+          let newPreset = { id: id, name: preset.name, icon: preset.icon, bg: preset.bg, color: preset.color },
+          this.dispatch('storePreset', newPreset),
+          task.commit('SET_PRESET', newPreset)
+        });
+        }catch(err){
+          console.log(err)
+        }
+      } */
+
+    // },
   },
 
   getters: {
@@ -282,6 +385,11 @@ export default new Vuex.Store({
     lights: state => {
       return state.lights;
     },
+
+    presets: state => {
+      return state.presets;
+    },
+
     groupLights: state => {
       let groupLights = {};
       let index = Object.keys(state.groups);

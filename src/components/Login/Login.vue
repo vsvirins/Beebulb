@@ -2,6 +2,7 @@
   <q-dialog v-model="active" persistent>
     <q-card class="login-dialog">
       <q-card-section>
+        <h4 class="text-amber text-center q-mt-sm" style="user-select: none;">Beebulb</h4>
         <q-input
           dense
           outlined
@@ -11,6 +12,7 @@
           v-model="username"
           placeholder="Username"
           style="font-size: 1rem"
+          color="amber-10"
           @keypress.enter="login"
         />
         <q-input
@@ -22,7 +24,16 @@
           placeholder="Password"
           style="font-size: 1rem"
           :hint="errorMsg"
+          color="amber-3"
           @keypress.enter="login"
+        />
+        <q-checkbox
+          dark
+          dense
+          class="text-grey q-mt-sm"
+          v-model="rememberUser"
+          label="Remember"
+          color="positive"
         />
       </q-card-section>
 
@@ -46,7 +57,8 @@ export default {
       active: true,
       username: "",
       password: "",
-      errorMsg: ""
+      errorMsg: "",
+      rememberUser: false
     };
   },
   watch: {
