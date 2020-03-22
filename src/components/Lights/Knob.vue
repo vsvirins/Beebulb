@@ -1,6 +1,5 @@
 <template>
   <div class="knob-wrapper">
-    <q-icon class="unreachable-icon" :name="unreachable" v-if="!reachable" />
     <q-knob
       v-model="dimValue"
       @input="dimLight"
@@ -11,7 +10,7 @@
       :color="trackColor"
       track-color="grey-10"
       class="knob q-ma-sm"
-      :step="5"
+      :step="3"
       :disable="!reachable"
     />
 
@@ -22,6 +21,7 @@
       @lightsOff="turnOff"
       @lightsOn="turnOn"
     />
+    <q-icon class="unreachable-icon" :name="unreachable" v-if="!reachable" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ import LightSwitch from "./LightSwitch.vue";
 import { mdiSignalOff } from "@mdi/js";
 export default {
   name: "Knob",
-  props: ["light"],
+  props: ["light", "show"],
   components: {
     "light-switch": LightSwitch
   },
@@ -115,13 +115,14 @@ export default {
 
 <style lang="scss" scoped>
 .knob-wrapper {
+  position: relative;
   .knob {
     margin: 0.2em;
   }
   .unreachable-icon {
     position: absolute;
-    bottom: 8rem;
-    left: 7rem;
+    right: 1rem;
+    top: 1rem;
   }
 }
 </style>

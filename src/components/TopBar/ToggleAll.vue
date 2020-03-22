@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: 'ToggleAll',
+  name: "ToggleAll",
 
   data() {
     return {
@@ -21,11 +21,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['groups', 'gatewayFound'])
+    ...mapGetters(["groups", "gatewayFound"])
   },
 
   methods: {
-    ...mapActions(['toggleAllLights']),
+    ...mapActions(["toggleAllLights"]),
 
     checkLightsStatus() {
       const lightsStates = this.groups.filter(state => state.on);

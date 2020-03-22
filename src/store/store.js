@@ -29,6 +29,9 @@ export default new Vuex.Store({
     SET_PRESET(state, preset) {
       state.presets = [...state.presets, preset];
     },
+    CLEAR_PRESETS(state) {
+      state.presets = [];
+    },
     SET_USER(state, user) {
       state.user = user;
     }
@@ -265,6 +268,7 @@ export default new Vuex.Store({
     async createNewPreset(task, { preset }) {
       let groupPreset = {};
       let newPreset = {};
+      let id = 0;
 
       for (let group in this.getters.groups) {
         const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}/scenes`;
@@ -274,6 +278,7 @@ export default new Vuex.Store({
           const response = await fetch(url, { method: "POST", body: params });
 
           const data = await response.json();
+          id = data[0].success.id;
           groupPreset = {
             id: data[0].success.id,
             groupid: group,
@@ -287,14 +292,18 @@ export default new Vuex.Store({
           console.log(err);
         }
       }
-      this.dispatch("storePreset", { preset: newPreset }),
+      this.dispatch("storePreset", {
+        id: id,
+        preset: newPreset
+      }),
         task.commit("SET_PRESET", newPreset);
     },
 
-    async storePreset(task, { preset }) {
+    async storePreset(task, { id, preset }) {
       const url = "http://192.168.10.110:8080/store_preset";
       const base64Preset = btoa(JSON.stringify(preset));
       const params = JSON.stringify({
+        id: id,
         preset: base64Preset,
         username: this.state.user
       });
@@ -335,25 +344,46 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
-    }
-    /*     async recallPreset(task, { sceneIds } ){
-      for(let group in this.getters.groups) {
-        let count = 0;
-        const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group.id}/scenes/${sceneIds[count]}/recall`;
-        const params = { "name": preset.name }
+    },
 
+    async recallPreset(task, { groupid, id }) {
+      const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${groupid}/scenes/${id}/recall`;
+
+      try {
+        await fetch(url, { method: "PUT" });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async deletePreset(task, { preset }) {
+      let presetId = 0;
+      let removedFromGateway = undefined;
+
+      for (let group in preset) {
+        presetId = preset[group].id;
+        const gatewayUrl = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${preset[group].groupid}/scenes/${presetId}`;
         try {
-        response = await fetch(url, { method: "POST", body: params }).then(id => {
-          let newPreset = { id: id, name: preset.name, icon: preset.icon, bg: preset.bg, color: preset.color },
-          this.dispatch('storePreset', newPreset),
-          task.commit('SET_PRESET', newPreset)
-        });
-        }catch(err){
-          console.log(err)
+          let response = await fetch(gatewayUrl, { method: "DELETE" });
+          response.ok
+            ? (removedFromGateway = true)
+            : (removedFromGateway = false);
+        } catch (err) {
+          console.log(err);
         }
-      } */
+      }
 
-    // },
+      let userApiUrl = `http://192.168.10.110:8080/delete_preset/${presetId}`;
+      try {
+        if (removedFromGateway)
+          await fetch(userApiUrl, { method: "DELETE" })
+            .then(() => {
+              task.commit("CLEAR_PRESETS");
+            })
+            .then(() => this.dispatch("getPresets"));
+      } catch (err) {
+        console.log(err);
+      }
+    }
   },
 
   getters: {

@@ -16,7 +16,8 @@
           :style="{ background: preset[1].bg, color: preset[1].color }"
           :icon="preset[1].icon"
           :label="preset[1].name"
-          label-position="left"
+          @click="setPreset(preset)"
+          label-position="right"
         />
       </div>
       <q-fab-action flat color="white" text-color="grey-2" icon="add" @click="newPreset = true" />
@@ -28,7 +29,7 @@
 <script>
 import NewPreset from "./NewPreset.vue";
 import { mdiPaletteOutline, mdiAirballoon, mdiArch, mdiAtom } from "@mdi/js";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "PresetButton",
@@ -49,6 +50,17 @@ export default {
 
   computed: {
     ...mapGetters(["presets"])
+  },
+  methods: {
+    ...mapActions(["recallPreset", "getLights"]),
+    setPreset(preset) {
+      Object.keys(preset).forEach(group => {
+        this.recallPreset({
+          groupid: preset[group].groupid,
+          id: preset[group].id
+        });
+      });
+    }
   }
 };
 </script>

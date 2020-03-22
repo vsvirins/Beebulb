@@ -111,12 +111,21 @@ def store_preset():
     request_data = request.get_json()
     preset = request_data['preset']
     username = request_data['username']
+    preset_id = request_data['id']
 
-    new_preset = Preset(preset=preset, owner=username)
+    new_preset = Preset(id=preset_id, preset=preset, owner=username)
     db.session.add(new_preset)
     db.session.commit()
 
     return jsonify({'msg': 'success'})
+
+
+@routes.route('/delete_preset/<preset_id>', methods=['DELETE'])
+def delete_preset(preset_id):
+    Preset.query.filter_by(id=preset_id).delete()
+    db.session.commit()
+
+    return jsonify({f'msg': 'preset {preset_id} deleted'})
 
 
 @routes.route('/get_presets', methods=['POST'])

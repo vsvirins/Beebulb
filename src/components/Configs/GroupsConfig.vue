@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-dialog v-model="active" persistent @keydown.esc="closeGroupsEdit">
+    <q-dialog v-model="editGroups" persistent @keydown.esc="closeGroupsEdit">
       <q-card class="group-edit-wrapper">
         <q-btn
           flat
@@ -77,11 +77,6 @@ export default {
         lightGroup: mdiLightbulbGroupOutline
       }
     };
-  },
-  watch: {
-    editGroups() {
-      this.active = this.editGroups;
-    }
   },
   methods: {
     ...mapActions(["addNewGroup", "removeGroup", "changeGroupNames"]),

@@ -14,6 +14,7 @@
           style="font-size: 1rem"
           color="amber-10"
           @keypress.enter="login"
+          @input="errorMsg = ''"
         />
         <q-input
           dense
@@ -26,6 +27,9 @@
           :hint="errorMsg"
           color="amber-3"
           @keypress.enter="login"
+          @keyup.enter="$event.target.select()"
+          @input="errorMsg = ''"
+          @focus="$event.target.select()"
         />
         <q-checkbox
           dark
@@ -49,7 +53,6 @@
 import { mapActions } from "vuex";
 export default {
   name: "Login",
-
   props: ["logged-in"],
 
   data() {
@@ -83,7 +86,7 @@ export default {
         });
       const newKey = () => this.generateNewKey({ username: this.username });
 
-      this.username !== "" && this.password !== ""
+      this.checkUsername(this.username) && this.checkPassword(this.password)
         ? register().then(msg => {
             msg === "success"
               ? this.discoverGateway().then(() =>
@@ -96,19 +99,34 @@ export default {
                 )
               : (this.errorMsg = msg);
           })
-        : (this.errorMsg = "Invalid username or password.");
+        : this.errorMsg !== "Password to short."
+        ? (this.errorMsg = "Invalid username or password")
+        : null;
     },
+
     login() {
       const login = () =>
         this.loginUser({
           username: this.username,
           password: this.password
         });
-      login().then(valid => {
-        valid === true
-          ? this.$emit("user-registred", true)
-          : (this.errorMsg = "Invalid username or password");
-      });
+
+      this.checkUsername(this.username) && this.checkPassword(this.password)
+        ? login().then(valid => {
+            valid === true
+              ? this.$emit("user-registred", true)
+              : (this.errorMsg = "Try again.");
+          })
+        : (this.errorMsg = "Invalid username or password");
+    },
+
+    checkUsername(username) {
+      return /^[0-9a-zA-Z_.-]+$/.test(username);
+    },
+
+    checkPassword(password) {
+      password.length > 3 ? "" : (this.errorMsg = "Password to short.");
+      return password.length > 3;
     }
   }
 };

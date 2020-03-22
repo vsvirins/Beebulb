@@ -35,8 +35,11 @@ export default {
   },
   watch: {
     isOn() {
-      if (this.isOn) this.stateColor = "positive";
-      else this.stateColor = "dark";
+      !this.reachable
+        ? (this.stateColor = "dark")
+        : this.isOn
+        ? (this.stateColor = "positive")
+        : (this.stateColor = "dark");
     }
   },
   computed: {
@@ -61,8 +64,11 @@ export default {
     },
     async checkLight() {
       this.lightState = await this.getLightState({ id: this.id });
-      if (this.lightState) this.stateColor = "positive";
-      else this.stateColor = "dark";
+      !this.reachable
+        ? (this.stateColor = "dark")
+        : this.lightState
+        ? (this.stateColor = "positive")
+        : (this.stateColor = "dark");
     },
     lightStatus() {
       if (this.isOn) return (this.stateColor = "positive");

@@ -30,18 +30,13 @@
         </q-item-section>
       </q-item>
 
-      <q-item
-        clickable
-        tag="a"
-        target="_blank"
-        href="https://forum.quasar.dev"
-        :class="{ 'no-gateway': !gatewayFound }"
-      >
+      <q-item clickable @click="editPresets = true" :class="{ 'no-gateway': !gatewayFound }">
         <q-item-section avatar>
           <q-icon :name="icons['presets']" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Presets</q-item-label>
+          <presets-config :edit-presets="editPresets" @closePresetsEdit="closePresetsEdit" />
         </q-item-section>
       </q-item>
 
@@ -75,6 +70,8 @@
 import GroupsConfig from "./GroupsConfig.vue";
 import GatewayConfig from "./GatewayConfig.vue";
 import LightsConfig from "./LightsConfig.vue";
+import PresetsConfig from "./PresetsConfig.vue";
+
 import {
   mdiGithubCircle,
   mdiLightbulbOutline,
@@ -93,7 +90,8 @@ export default {
   components: {
     "groups-config": GroupsConfig,
     "gateway-config": GatewayConfig,
-    "lights-config": LightsConfig
+    "lights-config": LightsConfig,
+    "presets-config": PresetsConfig
   },
 
   watch: {
@@ -116,6 +114,7 @@ export default {
       editGroups: false,
       editLights: false,
       editGateway: false,
+      editPresets: false,
       icons: {
         github: mdiGithubCircle,
         light: mdiLightbulbOutline,
@@ -140,6 +139,9 @@ export default {
     },
     closeLightsEdit() {
       this.editLights = false;
+    },
+    closePresetsEdit() {
+      this.editPresets = false;
     }
   }
 };

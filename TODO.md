@@ -26,8 +26,8 @@
 
 - [x] Fix state problem when closing config menu
 - [x] Remove buggy draggable from groups
-- [ ] Fix compatibility issues with chrome android
-- [ ] Fix unreachable icon overflow
+- [x] Fix compatibility issues with chrome android
+- [x] Fix unreachable icon overflow
 
 
 ### Configs
@@ -57,11 +57,11 @@
 ###### Presets
 ---
 
-- [ ] PresetsConfig dialog
-- [ ] Create preset
-- [ ] Delete preset
-- [ ] Change presets icons
-- [ ] Color picker for presets
+- [x] PresetsConfig dialog
+- [x] Create preset
+- [x] Delete preset
+- [x] Change presets icons
+- [x] Color picker for presets
 
 ###### Gateway
 ---
@@ -87,6 +87,7 @@
 - [x] Login user
 - [x] Store deCONZ API key
 - [x] Get deCONZ API key
-- [ ] Save presets
+- [x] Save presets
+- [ ] Remember user
 - [ ] Save group order
 - [ ] Containerize

@@ -21,9 +21,11 @@ class User(db.Model):
 
 class Preset(db.Model):
     __tablename__ = "preset"
-    preset = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    preset = db.Column(db.String)
     owner = db.Column(db.String, nullable=False)
 
-    def __init__(self, preset, owner):
+    def __init__(self, id, preset, owner):
+        self.id = id
         self.preset = preset
         self.owner = owner

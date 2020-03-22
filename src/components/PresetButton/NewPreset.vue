@@ -20,7 +20,6 @@
             v-model="name"
             color="amber"
             dark
-            autofocus
             counter
             maxlength="22"
             placeholder="Name"
@@ -40,7 +39,7 @@
           <q-btn
             round
             size="sm"
-            :style="{ background: 'white', color: '#333' }"
+            :style="{ background: iconBg , color: '#222' }"
             class="q-ma-sm"
             :icon="presetIcon"
             @click="changeIconColor = true"
@@ -49,11 +48,13 @@
             flat
             round
             size="sm"
+            :style="{ color: iconColor }"
             class="q-ma-sm"
             :icon="presetIcon"
             @click="changeIconColor = false"
           />
           <q-btn flat round size="sm" class="q-ma-sm" :icon="swapIcon" @click="swapColor" />
+          <q-btn flat round size="sm" icon="add" class="q-ma-sm float-right" @click="addNewPreset" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-white">
@@ -65,13 +66,12 @@
             class="absolute-top-right q-ma-sm"
             @click="closeWindow"
           />
-          <q-btn flat round icon="add" @click="addNewPreset" />
         </q-card-actions>
       </q-card>
     </q-dialog>
     <q-dialog v-model="pickIcon">
       <q-card class="bg-dark">
-        <q-card-section class="q-ma-sm">
+        <q-card-section>
           <q-btn
             round
             :style="{ background: iconBg, color: iconColor }"
@@ -88,7 +88,69 @@
 </template>
 
 <script>
-import { mdiAirballoon, mdiArch, mdiAtom, mdiAutorenew } from "@mdi/js";
+import {
+  mdiAirballoon,
+  mdiArch,
+  mdiAtom,
+  mdiAutorenew,
+  mdiBeer,
+  mdiBeehiveOutline,
+  mdiBat,
+  mdiAndroidStudio,
+  mdiAppleIcloud,
+  mdiAnchor,
+  mdiAnvil,
+  mdiApproximatelyEqual,
+  mdiAppleSafari,
+  mdiAt,
+  mdiAttachment,
+  mdiBaguette,
+  mdiBalloon,
+  mdiBarley,
+  mdiBedKing,
+  mdiBee,
+  mdiBell,
+  mdiBilliards,
+  mdiBinoculars,
+  mdiBlender,
+  mdiBolt,
+  mdiBomb,
+  mdiBoombox,
+  mdiBowlMix,
+  mdiBowling,
+  mdiBrain,
+  mdiBriefcase,
+  mdiBrightness3,
+  mdiBroom,
+  mdiBrush,
+  mdiBullseye,
+  mdiBugle,
+  mdiCakeVariant,
+  mdiCameraIris,
+  mdiCamera,
+  mdiCannabis,
+  mdiCandycane,
+  mdiCampfire,
+  mdiCardsHeart,
+  mdiCardsSpade,
+  mdiCardsDiamond,
+  mdiCardsClub,
+  mdiCat,
+  mdiChessKing,
+  mdiChessQueen,
+  mdiChiliMild,
+  mdiCigar,
+  mdiChristianity,
+  mdiCityVariant,
+  mdiClippy,
+  mdiCoffee,
+  mdiClover,
+  mdiCodeTags,
+  mdiCog,
+  mdiCompassRose,
+  mdiControllerClassic,
+  mdiCookie
+} from "@mdi/js";
 import { mapActions } from "vuex";
 
 export default {
@@ -106,13 +168,70 @@ export default {
       pickIcon: false,
       presetIcon: "edit",
       swapIcon: mdiAutorenew,
-      iconBg: "rgb(247,188,40)",
-      iconColor: "rgb(20,20,20)",
+      iconBg: "rgb(60,60,60)",
+      iconColor: "rgb(247,188,40)",
       changeIconColor: true,
       icons: {
         mdiAirballoon: mdiAirballoon,
         mdiArch: mdiArch,
-        mdiAtom: mdiAtom
+        mdiAtom: mdiAtom,
+        mdiBeer: mdiBeer,
+        mdiBeehiveOutline: mdiBeehiveOutline,
+        mdiBat: mdiBat,
+        mdiAndroidStudio: mdiAndroidStudio,
+        mdiAppleIcloud: mdiAppleIcloud,
+        mdiAnchor: mdiAnchor,
+        mdiAnvil: mdiAnvil,
+        mdiApproximatelyEqual: mdiApproximatelyEqual,
+        mdiAppleSafari: mdiAppleSafari,
+        mdiAt: mdiAt,
+        mdiAttachment: mdiAttachment,
+        mdiBaguette: mdiBaguette,
+        mdiBalloon: mdiBalloon,
+        mdiBarley: mdiBarley,
+        mdiBedKing: mdiBedKing,
+        mdiBee: mdiBee,
+        mdiBell: mdiBell,
+        mdiBilliards: mdiBilliards,
+        mdiBinoculars: mdiBinoculars,
+        mdiBlender: mdiBlender,
+        mdiBolt: mdiBolt,
+        mdiBomb: mdiBomb,
+        mdiBoombox: mdiBoombox,
+        mdiBowlMix: mdiBowlMix,
+        mdiBowling: mdiBowling,
+        mdiBrain: mdiBrain,
+        mdiBriefcase: mdiBriefcase,
+        mdiBrightness3: mdiBrightness3,
+        mdiBroom: mdiBroom,
+        mdiBrush: mdiBrush,
+        mdiBullseye: mdiBullseye,
+        mdiBugle: mdiBugle,
+        mdiCakeVariant: mdiCakeVariant,
+        mdiCameraIris: mdiCameraIris,
+        mdiCamera: mdiCamera,
+        mdiCannabis: mdiCannabis,
+        mdiCandycane: mdiCandycane,
+        mdiCampfire: mdiCampfire,
+        mdiCardsHeart: mdiCardsHeart,
+        mdiCardsSpade: mdiCardsSpade,
+        mdiCardsDiamond: mdiCardsDiamond,
+        mdiCardsClub: mdiCardsClub,
+        mdiCat: mdiCat,
+        mdiChessQueen: mdiChessQueen,
+        mdiChessKing: mdiChessKing,
+        mdiChiliMild: mdiChiliMild,
+        mdiCigar: mdiCigar,
+        mdiChristianity: mdiChristianity,
+        mdiCityVariant: mdiCityVariant,
+        mdiClippy: mdiClippy,
+        mdiCoffee: mdiCoffee,
+        mdiClover: mdiClover,
+        mdiCodeTags: mdiCodeTags,
+        mdiCog: mdiCog,
+        mdiCompassRose: mdiCompassRose,
+        mdiControllerClassic: mdiControllerClassic,
+        mdiCookie: mdiCookie
       }
     };
   },
@@ -135,6 +254,10 @@ export default {
         color: this.iconColor
       };
       this.createNewPreset({ preset: preset });
+      this.iconBg = "rgb(60,60,60)";
+      this.iconColor = "rgb(247,188,40)";
+      this.name = "";
+      this.presetIcon = "edit";
       this.closeWindow();
     }
   }
