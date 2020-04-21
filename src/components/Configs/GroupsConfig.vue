@@ -32,7 +32,6 @@
         <q-card-section class="add-group">
           <q-input
             dark
-            autofocus
             v-model="newGroupName"
             placeholder="New group.."
             @keydown.enter="addGroup"

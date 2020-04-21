@@ -7,7 +7,6 @@
           dense
           outlined
           dark
-          autofocus
           class="q-mb-sm"
           v-model="username"
           placeholder="Username"
@@ -34,7 +33,7 @@
         <q-checkbox
           dark
           dense
-          class="text-grey q-mt-sm"
+          class="text-grey text-caption q-mt-sm"
           v-model="rememberUser"
           label="Remember"
           color="positive"
@@ -50,10 +49,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Login",
-  props: ["logged-in"],
 
   data() {
     return {
@@ -64,11 +62,7 @@ export default {
       rememberUser: false
     };
   },
-  watch: {
-    loggedIn() {
-      this.active = !this.loggedIn;
-    }
-  },
+
   methods: {
     ...mapActions([
       "registerNewUser",
@@ -78,25 +72,34 @@ export default {
       "getLights",
       "getGroups"
     ]),
+
+    ...mapMutations(["AUTH"]),
+
+    ...mapGetters(["authed"]),
+
     register() {
       const register = () =>
         this.registerNewUser({
           username: this.username,
           password: this.password
         });
-      const newKey = () => this.generateNewKey({ username: this.username });
 
       this.checkUsername(this.username) && this.checkPassword(this.password)
         ? register().then(msg => {
             msg === "success"
               ? this.discoverGateway().then(() =>
-                  newKey().then(gatewayUnlocked => {
-                    gatewayUnlocked === false
-                      ? (this.errorMsg = "Gateway is locked.")
-                      : (this.getLights().then(() => this.getGroups()),
-                        this.$emit("user-registred", true));
-                  })
+                  this.generateNewKey({ username: this.username }).then(
+                    gatewayUnlocked => {
+                      gatewayUnlocked
+                        ? (this.getLights().then(() => this.getGroups()),
+                          this.AUTH(true),
+                          (this.active = false))
+                        : (this.errorMsg = "Gateway is locked.");
+                    }
+                  )
                 )
+              : typeof msg === "undefined"
+              ? (this.errorMsg = "Connection problems.")
               : (this.errorMsg = msg);
           })
         : this.errorMsg !== "Password to short."
@@ -112,10 +115,12 @@ export default {
         });
 
       this.checkUsername(this.username) && this.checkPassword(this.password)
-        ? login().then(valid => {
-            valid === true
-              ? this.$emit("user-registred", true)
-              : (this.errorMsg = "Try again.");
+        ? login().then(response => {
+            response === true
+              ? (this.AUTH(true), (this.active = false))
+              : typeof response === "undefined"
+              ? (this.errorMsg = "Connection problems.")
+              : (this.errorMsg = response);
           })
         : (this.errorMsg = "Invalid username or password");
     },
@@ -125,7 +130,7 @@ export default {
     },
 
     checkPassword(password) {
-      password.length > 3 ? "" : (this.errorMsg = "Password to short.");
+      if (password.length <= 3) this.errorMsg = "Password too short.";
       return password.length > 3;
     }
   }
@@ -134,7 +139,20 @@ export default {
 
 <style lang="scss" scoped>
 .login-dialog {
+  //opacity: 0;
   background-color: #222;
   padding: 1rem;
+  animation: fade 1.5s;
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }
 </style>

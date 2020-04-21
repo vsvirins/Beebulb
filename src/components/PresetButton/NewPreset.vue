@@ -23,7 +23,9 @@
             counter
             maxlength="22"
             placeholder="Name"
+            :hint="hint"
             @keyup.enter="closeWindow"
+            @input="hint = ''"
           />
         </q-card-section>
 
@@ -151,7 +153,7 @@ import {
   mdiControllerClassic,
   mdiCookie
 } from "@mdi/js";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "NewPreset",
@@ -165,6 +167,7 @@ export default {
     return {
       active: false,
       name: "",
+      hint: "",
       pickIcon: false,
       presetIcon: "edit",
       swapIcon: mdiAutorenew,
@@ -237,15 +240,19 @@ export default {
   },
   methods: {
     ...mapActions(["createNewPreset"]),
+    ...mapGetters(["presets"]),
 
     closeWindow() {
+      this.hint = "";
       this.$emit("closeWindow");
     },
+
     swapColor() {
       const tempColor = this.iconBg;
       this.iconBg = this.iconColor;
       this.iconColor = tempColor;
     },
+
     addNewPreset() {
       const preset = {
         name: this.name,
@@ -253,12 +260,28 @@ export default {
         bg: this.iconBg,
         color: this.iconColor
       };
-      this.createNewPreset({ preset: preset });
-      this.iconBg = "rgb(60,60,60)";
-      this.iconColor = "rgb(247,188,40)";
-      this.name = "";
-      this.presetIcon = "edit";
-      this.closeWindow();
+      const createPreset = () => {
+        this.createNewPreset({ preset: preset }),
+          (this.iconBg = "rgb(60,60,60)"),
+          (this.iconColor = "rgb(247,188,40)"),
+          (this.name = ""),
+          (this.presetIcon = "edit"),
+          this.closeWindow();
+      };
+      const checkIfPresetExist = () => {
+        for (let preset of this.presets()) {
+          let index = Object.keys(preset)[0];
+          if (preset[index].name === this.name) {
+            return true;
+          }
+        }
+      };
+
+      this.presets().length !== 0
+        ? checkIfPresetExist()
+          ? (this.hint = "Name is occupied.")
+          : createPreset()
+        : createPreset();
     }
   }
 };

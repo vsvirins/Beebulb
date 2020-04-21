@@ -6,12 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    gateway: { 0: { name: "" } },
-    key: "", //A2D4D78CA0
+    authed: false,
+    key: "",
     user: "",
+    gateway: { 0: { name: "" } },
     groups: [],
     lights: [],
-    presets: []
+    presets: [],
   },
   mutations: {
     SET_GATEWAY(state, gateway) {
@@ -34,16 +35,18 @@ export default new Vuex.Store({
     },
     SET_USER(state, user) {
       state.user = user;
-    }
+    },
+    AUTH(state, authed) {
+      state.authed = authed;
+    },
   },
   actions: {
     async discoverGateway(task) {
-      // https://dresden-light.appspot.com/discover
       const url = "https://dresden-light.appspot.com/discover";
       try {
         const response = await fetch(url);
         const data = await response.json();
-        Array.isArray(data) && data.length
+        response.status === 200 && Array.isArray(data) && data.length
           ? task.commit("SET_GATEWAY", data)
           : task.commit("SET_GATEWAY", false);
       } catch (err) {
@@ -71,8 +74,8 @@ export default new Vuex.Store({
         if (this.getters.gatewayFound) {
           const respone = await fetch(url);
           const data = await respone.json();
-          return task.commit("SET_LIGHTS", data);
-        } else null;
+          task.commit("SET_LIGHTS", data);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -119,7 +122,7 @@ export default new Vuex.Store({
             ? fetch(url, { method: "PUT", body: params })
             : fetch(url, {
                 method: "PUT",
-                body: '{ "on": false, "bri": 0 }'
+                body: '{ "on": false, "bri": 0 }',
               });
         } catch (err) {
           console.log(err);
@@ -148,6 +151,7 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
+
     async removeGroup(task, { id }) {
       const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${id}`;
       try {
@@ -159,7 +163,7 @@ export default new Vuex.Store({
     },
     async changeGroupNames(task, { groupNames }) {
       try {
-        Object.keys(groupNames).forEach(async group => {
+        Object.keys(groupNames).forEach(async (group) => {
           if (/\S/.test(groupNames[group])) {
             const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}`;
             const params = `{"name": "${groupNames[group]}"}`;
@@ -172,8 +176,6 @@ export default new Vuex.Store({
     },
 
     async setNewLightOrder(task, { order }) {
-      //const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/groups/${group}`;
-      //const params = `{"lights":${lights}}`;
       try {
         this.dispatch("removeAllLights");
         for (let group in order) {
@@ -188,7 +190,7 @@ export default new Vuex.Store({
     },
 
     removeAllLights() {
-      Object.keys(this.state.lights).forEach(async light => {
+      Object.keys(this.state.lights).forEach(async (light) => {
         const url = `http://${this.getters.gatewayAdress}/api/${this.state.key}/lights/${light}/groups`;
         await fetch(url, { method: "DELETE" });
       });
@@ -203,8 +205,8 @@ export default new Vuex.Store({
           method: "POST",
           body: params,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const recieved = await response.json();
         return recieved.msg;
@@ -217,7 +219,7 @@ export default new Vuex.Store({
       const url = "http://192.168.10.110:8080/generate_key";
       const params = JSON.stringify({
         username: username,
-        address: this.getters.gatewayAdress
+        address: this.getters.gatewayAdress,
       });
 
       try {
@@ -225,8 +227,8 @@ export default new Vuex.Store({
           method: "POST",
           body: params,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const key = await response.json();
         return key.msg === "Gateway is locked"
@@ -246,23 +248,29 @@ export default new Vuex.Store({
           method: "POST",
           body: params,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const recieved = await response.json();
-        return recieved.valid_login === true
+        return recieved.msg === true
           ? (task.commit("SET_KEY", recieved.key),
             task.commit("SET_USER", username),
             this.dispatch("discoverGateway")
               .then(() => this.dispatch("getLights"))
               .then(() => this.dispatch("getGroups"))
               .then(() => this.dispatch("getPresets"))
-              .catch(false),
-            recieved.valid_login)
-          : recieved.valid_login;
+              .catch((err) => console.log(err)),
+            recieved.msg)
+          : recieved.msg;
       } catch (err) {
         console.log(err);
       }
+    },
+
+    async autoLogin() {
+      const url = "http://192.168.10.110:8080/auto_login";
+      let response = await fetch(url, { method: "GET" });
+      return response.json();
     },
 
     async createNewPreset(task, { preset }) {
@@ -285,7 +293,7 @@ export default new Vuex.Store({
             name: preset.name,
             icon: preset.icon,
             bg: preset.bg,
-            color: preset.color
+            color: preset.color,
           };
           newPreset = { ...newPreset, [group]: groupPreset };
         } catch (err) {
@@ -294,7 +302,7 @@ export default new Vuex.Store({
       }
       this.dispatch("storePreset", {
         id: id,
-        preset: newPreset
+        preset: newPreset,
       }),
         task.commit("SET_PRESET", newPreset);
     },
@@ -305,7 +313,7 @@ export default new Vuex.Store({
       const params = JSON.stringify({
         id: id,
         preset: base64Preset,
-        username: this.state.user
+        username: this.state.user,
       });
 
       try {
@@ -313,8 +321,8 @@ export default new Vuex.Store({
           method: "POST",
           body: params,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
       } catch (err) {
         console.log(err);
@@ -324,7 +332,7 @@ export default new Vuex.Store({
     async getPresets(task) {
       const url = "http://192.168.10.110:8080/get_presets";
       const params = JSON.stringify({
-        username: this.state.user
+        username: this.state.user,
       });
 
       try {
@@ -332,13 +340,15 @@ export default new Vuex.Store({
           method: "POST",
           body: params,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const data = await response.json();
-        Object.keys(data).forEach(preset => {
+        Object.keys(data).forEach((preset) => {
           let decodedPreset = JSON.parse(atob(data[preset]));
-          task.commit("SET_PRESET", decodedPreset);
+          if (Object.keys(decodedPreset).length !== 0) {
+            task.commit("SET_PRESET", decodedPreset);
+          }
           decodedPreset = {};
         });
       } catch (err) {
@@ -355,6 +365,7 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
+
     async deletePreset(task, { preset }) {
       let presetId = 0;
       let removedFromGateway = undefined;
@@ -383,52 +394,52 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
-    }
+    },
   },
 
   getters: {
-    gatewayFound: state => {
-      return state.gateway === false ? false : true;
+    gatewayFound: (state) => {
+      return state.gateway[0].name === "" ? false : true;
     },
-    gatewayIP: state => {
+    gatewayIP: (state) => {
       return state.gateway === false
         ? "0.0.0.0"
         : state.gateway["0"].internalipaddress;
     },
-    gatewayPort: state => {
+    gatewayPort: (state) => {
       return state.gateway["0"].internalport;
     },
-    gatewayAdress: state => {
+    gatewayAdress: (state) => {
       return state.gateway === false
         ? ""
         : `${state.gateway["0"].internalipaddress}:${state.gateway["0"].internalport}`;
     },
-    gatewayName: state => {
+    gatewayName: (state) => {
       return state.gateway["0"].name;
     },
-    lightStates: state => {
-      return state.lights;
-    },
-    groups: state => {
+    groups: (state) => {
       return state.groups;
     },
-    lights: state => {
+    lights: (state) => {
       return state.lights;
     },
 
-    presets: state => {
+    presets: (state) => {
       return state.presets;
     },
 
-    groupLights: state => {
+    authed: (state) => {
+      return state.authed;
+    },
+
+    groupLights: (state) => {
       let groupLights = {};
       let index = Object.keys(state.groups);
       for (index in state.groups) {
         groupLights[index] = state.groups[index].lights;
       }
       return groupLights;
-    }
+    },
   },
-  modules: {}
+  modules: {},
 });
-//A2D4D78CA0

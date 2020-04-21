@@ -9,7 +9,7 @@
       :thickness="thickness"
       :color="trackColor"
       track-color="grey-10"
-      class="knob q-ma-sm"
+      class="knob"
       :step="3"
       :disable="!reachable"
     />
@@ -31,12 +31,12 @@ import LightSwitch from "./LightSwitch.vue";
 import { mdiSignalOff } from "@mdi/js";
 export default {
   name: "Knob",
-  props: ["light", "show"],
+  props: ["light"],
   components: {
     "light-switch": LightSwitch
   },
   computed: {
-    ...mapGetters(["lightStates", "lights"]),
+    ...mapGetters(["lights"]),
     trackColor() {
       if (this.dimValue < 25) return "amber-9";
       if (this.dimValue < 50) return "amber-8";
@@ -51,8 +51,7 @@ export default {
       else return "amber 10";
     },
     reachable() {
-      const isReachable = this.lights[this.id].state.reachable;
-      return isReachable;
+      return this.lights[this.id].state.reachable;
     }
   },
 
@@ -68,6 +67,7 @@ export default {
   },
   methods: {
     ...mapActions(["setDim", "getLights"]),
+
     dimLight(input) {
       const id = this.id;
       if (input != this.oldValue) {
@@ -77,13 +77,11 @@ export default {
       }
     },
     async setBrightness(callback) {
-      await callback();
-      const lightList = this.lightStates;
-      const brightness = lightList[this.id].state.bri;
-      const state = lightList[this.id].state.on;
-
-      brightness < 5 ? (this.dimValue = 0) : (this.dimValue = brightness);
-      this.isOn = state;
+      if (callback) {
+        await callback();
+      }
+      this.dimValue = this.lights[this.id].state.bri;
+      this.isOn = this.lights[this.id].state.on;
     },
     turnOff() {
       this.dimValue = 0;
@@ -96,7 +94,6 @@ export default {
   },
 
   mounted() {
-    //this.reachable = this.lights[this.id].state.reachable;
     this.setBrightness(this.getLights).then(() => {
       if (!this.lights[this.id].state.reachable) this.turnOff();
     });
@@ -106,6 +103,15 @@ export default {
           action.payload.state
             ? ((this.dimValue = 200), (this.isOn = true))
             : ((this.dimValue = 0), (this.isOn = false));
+        }
+      }
+    });
+    this.$store.subscribeAction({
+      after: action => {
+        if (action.type === "recallPreset") {
+          this.getLights().then(() => {
+            this.setBrightness();
+          });
         }
       }
     });

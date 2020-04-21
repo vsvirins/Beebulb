@@ -1,16 +1,12 @@
 <template>
   <q-drawer v-model="drawerState" content-class="config-drawer" dark :width="200">
     <q-list>
-      <q-item>
-        <q-toggle
-          class="absolute-top q-ma-sm"
-          :icon="icons['dark']"
-          color="grey-8"
-          v-model="darkMode"
-        />
-      </q-item>
-      <q-space />
-      <q-item clickable @click="editLights = true" :class="{ 'no-gateway': !gatewayFound }">
+      <q-item
+        clickable
+        @click="editLights = true"
+        class="q-mt-sm"
+        :class="{ 'no-gateway': !gatewayFound }"
+      >
         <q-item-section avatar>
           <q-icon :name="icons['light']" />
         </q-item-section>
@@ -60,6 +56,15 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>About</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item class="absolute-bottom q-mb-xl">
+        <q-toggle class="absolute-center" :icon="icons['dark']" color="grey-8" v-model="darkMode" />
+      </q-item>
+
+      <q-item clickable @click="logOut" class="absolute-bottom q-mb-sm">
+        <q-item-section>
+          <q-item-label class="text-center text-caption">Sign out</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -142,6 +147,11 @@ export default {
     },
     closePresetsEdit() {
       this.editPresets = false;
+    },
+    logOut() {
+      this.$emit("drawer-close", !this.drawerState);
+      this.$store.commit("AUTH", false);
+      this.$store.state.presets = [];
     }
   }
 };
@@ -152,6 +162,10 @@ export default {
 
 .config-drawer {
   background: $secondary-dark;
+
+  .dark-toggle {
+    justify-self: flex-start;
+  }
 
   .no-gateway {
     opacity: 0.5;

@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 from .models import db, User, Preset
 from .passhash import generate_password, verify_password
 from flask_cors import CORS
-from sqlalchemy.orm.session import make_transient_to_detached
 import requests
 import json
 
@@ -36,20 +35,14 @@ def new_user():
 
     if exists:
         return jsonify({'msg': 'Username already exists.'})
-    elif username == '' and password == '':
-        return jsonify({'msg': 'Invalid username and password.'})
-    elif username == '':
-        return jsonify({'msg': 'Invalid username.'})
-    elif password == '':
-        return jsonify({'msg': 'Invalid password.'})
+    elif username == '' or password == '':
+        return jsonify({'msg': 'Invalid username or password.'})
 
     else:
-        password_tuple = generate_password(password)
-        password_hash = password_tuple[0]
-        password_salt = password_tuple[1]
+        password_pair = generate_password(password)
 
-        user = User(username=username, password_hash=password_hash,
-                    password_salt=password_salt)
+        user = User(username=username, password_hash=password_pair[0],
+                    password_salt=password_pair[1])
         db.session.add(user)
         db.session.commit()
 
@@ -65,21 +58,23 @@ def login():
     exists = check_if_exists(username)
 
     if not exists:
-        return jsonify({'msg': "username doesn't exists"})
-    elif username == '' and password == '':
-        return jsonify({'msg': 'Invalid username and password'})
-    elif username == '':
-        return jsonify({'msg': 'Invalid username.'})
-    elif password == '':
-        return jsonify({'msg': 'Invalid password.'})
+        return jsonify({'msg': "User doesn't exist."})
+    elif username == '' or password == '':
+        return jsonify({'msg': 'Invalid username or password.'})
 
     else:
         valid_login = verify_password(username, password)
         if(valid_login):
             key = get_key(username)
-            return jsonify({'valid_login': valid_login, 'key': key})
+            return jsonify({'msg': valid_login, 'key': key})
         else:
-            return jsonify({'valid_login': valid_login})
+            return jsonify({"msg": "Wrong password"})
+
+
+@routes.route('/auto_login', methods=['GET'])
+def auto_login():
+    user = User.query.filter_by(username='vsvirins').first()
+    return jsonify({"enabled": True, "key": user.key, "username": user.username})
 
 
 @routes.route('/generate_key', methods=['POST'])

@@ -11,7 +11,7 @@
           @click="closePresetsEdit"
         />
 
-        <q-card-section class="presets-edit">
+        <q-card-section class="presets-edit" v-if="presets.length !== 0">
           <div class="presets-list" v-for="preset in presets" :key="preset.key">
             <q-btn
               flat

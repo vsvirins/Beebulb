@@ -8,10 +8,23 @@ Vue.config.productionTip = false;
 
 new Vue({
   store,
-  //TODO: check if 'remember me' is checked.
-  /*   created() {
-    store.dispatch('autoLogin')
-      .catch(false);
-  }, */
+  created() {
+    store
+      .dispatch("autoLogin")
+      .then(response => {
+        if (response.enabled) {
+          store.commit("AUTH", true);
+          store.commit("SET_KEY", response.key);
+          store.commit("SET_USER", response.username);
+          store
+            .dispatch("discoverGateway")
+            .then(() => store.dispatch("getLights"))
+            .then(() => store.dispatch("getGroups"))
+            .then(() => store.dispatch("getPresets"))
+            .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+  },
   render: h => h(App)
 }).$mount("#app");

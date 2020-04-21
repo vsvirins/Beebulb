@@ -55,6 +55,7 @@ export default {
       this.switchColor(state);
       if (!state) this.$emit("lightsOn", 200);
     },
+
     switchColor(state) {
       if (!state) this.stateColor = "positive";
       else
@@ -62,6 +63,7 @@ export default {
           this.$emit("lightsOff"),
           (this.lightState = !state);
     },
+
     async checkLight() {
       this.lightState = await this.getLightState({ id: this.id });
       !this.reachable

@@ -4,9 +4,7 @@
       <div
         class="text-h5 non-selectable q-mx-md q-my-sm"
         style="font-family: 'Source Code Pro'; font-size: 1.2rem; font-weight: 500"
-      >
-        {{ name }}
-      </div>
+      >{{ name }}</div>
       <q-icon
         class="minimize-icon"
         size="150%"
@@ -14,24 +12,16 @@
         :class="!show ? 'rotate-minimize-icon' : 'rotate-back'"
       />
     </q-card-section>
-    <transition name="show">
-      <q-card-actions class="knobs" v-if="show">
-        <knob
-          v-for="light in lights"
-          :key="light"
-          :light="light"
-          :show="show"
-        />
-      </q-card-actions>
-    </transition>
+
+    <q-card-actions class="knobs" :class="!show ? 'hide' : 'show'">
+      <knob v-for="light in lights" :key="light" :light="light" />
+    </q-card-actions>
   </q-card>
 </template>
 
 <script>
 import Knob from "./Knob.vue";
 import { mdiChevronUp } from "@mdi/js";
-
-//:style="{top: position + 'px'}"
 
 export default {
   name: "LightGroup",
@@ -50,9 +40,7 @@ export default {
       show: true,
       minimizeIcon: mdiChevronUp
     };
-  },
-
-  methods: {}
+  }
 };
 </script>
 
@@ -61,13 +49,9 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:900&display=swap");
 
 .light-group {
-  ::-webkit-scrollbar {
-    display: none;
-  }
   order: 0;
   box-shadow: none;
   border-radius: 0px;
-  //border: 1px solid rgb(37, 37, 37);
 
   .light-group-header {
     background: rgb(46, 46, 46);
@@ -109,31 +93,19 @@ export default {
   .knobs {
     background: rgb(59, 59, 59);
     color: rgb(235, 235, 235);
+    justify-content: space-evenly;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding: 0;
-    padding-top: 2em;
-    justify-content: flex-start;
-    overflow-y: hidden;
-    flex-wrap: nowrap;
-    height: 12em;
   }
-
-  .show-enter-active {
-    animation: slide 0.2s ease-in-out;
+  .hide {
+    height: 0;
+    padding-bottom: 0;
+    transition: all 0.2s ease;
   }
-  .show-leave-active {
-    animation: slide 0.2s reverse ease-in-out;
-  }
-
-  @keyframes slide {
-    0% {
-      padding: 0;
-      overflow: hidden;
-      max-height: 0vh;
-    }
-    100% {
-      overflow: hidden;
-      max-height: 23vh;
-    }
+  .show {
+    height: 13.72em;
+    transition: all 0.2s ease;
   }
 }
 </style>

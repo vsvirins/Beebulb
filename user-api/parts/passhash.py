@@ -11,16 +11,18 @@ def generate_password(password):
         salt,
         100000
     )
-    hash_salt_tuple = [key, salt]
-    return hash_salt_tuple
+    hash_salt_pair = [key, salt]
+    return hash_salt_pair
 
 
 def verify_password(username, password):
+    print('helasdasdlo')
     user = User.query.filter_by(username=username).first()
-    new_key = hashlib.pbkdf2_hmac(
+    password_hash = hashlib.pbkdf2_hmac(
         'sha256',
         password.encode('utf-8'),
         user.password_salt,
         100000
     )
-    return new_key == user.password_hash
+
+    return password_hash == user.password_hash

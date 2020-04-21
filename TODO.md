@@ -20,6 +20,8 @@
 - [x] Make presetbutton fixed
 - [x] Some kind of communication error warning
 - [ ] Migrate to TopBar component group
+- [ ] Remove unused stuff
+- [ ] Make new component from preset icons
 
 
 ### Bugs
@@ -53,6 +55,7 @@
 - [x] Rename group
 - [ ] Check if groupname exsist before adding new group
 - [ ] Rearrange groups
+- [ ] Edit icon
 
 ###### Presets
 ---
@@ -78,7 +81,7 @@
 ### Live demo
 
 - [ ] Dummie gateway
-- [ ] Demo app, sanbox or site?
+- [ ] Demo app
 
 
 ### Flask+SQLite backend

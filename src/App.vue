@@ -1,7 +1,7 @@
 <template>
 <body :class="{ 'light-mode': !darkMode }">
-  <login v-if="gatewayFound" :logged-in="loggedIn" @user-registred="loggedIn = $event" />
-  <q-layout view="hHh Lpr lff">
+  <login v-if="!authed" />
+  <q-layout view="hHh Lpr lff" v-if="authed">
     <q-header class="top-bar">
       <q-toolbar>
         <q-btn
@@ -79,13 +79,19 @@ export default {
     return {
       drawerOpen: false,
       toggleAll: true,
-      darkMode: true,
-      loggedIn: false
+      darkMode: true
     };
   },
 
   computed: {
-    ...mapGetters(["gatewayFound", "gatewayName", "groups", "lights"]),
+    ...mapGetters([
+      "gatewayFound",
+      "gatewayName",
+      "groups",
+      "lights",
+      "authed"
+    ]),
+
     topBarTitle: {
       get() {
         return this.gatewayFound ? this.gatewayName : "Beebulb";
@@ -115,7 +121,9 @@ html {
 
   body {
     font-family: "Source Code Pro";
-    background-image: $bee-bg-dark;
+    background-color: #222;
+    background-size: 150%;
+    //background-image: $bee-bg-dark;
     backface-visibility: hidden;
 
     .top-bar {
@@ -130,14 +138,39 @@ html {
     .group-wrapper {
       display: flex;
       flex-direction: column;
+      animation: fade 1s;
+      @keyframes fade {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
     }
     .no-gateway {
+      animation: fade 2s;
       display: flex;
       min-height: 100%;
       width: 100%;
       align-content: center;
       justify-content: center;
       pointer-events: none;
+
+      @keyframes fade {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
     }
   }
 
