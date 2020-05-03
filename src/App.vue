@@ -16,12 +16,7 @@
 
         <q-toolbar-title class="top-bar-title non-selectable">{{ topBarTitle }}</q-toolbar-title>
         <q-space />
-        <q-toggle
-          icon="power_settings_new"
-          v-model="toggleAll"
-          color="positive"
-          v-if="gatewayFound"
-        />
+
         <toggle-all />
       </q-toolbar>
     </q-header>
@@ -99,11 +94,6 @@ export default {
       set(topBarTitle) {
         return topBarTitle;
       }
-    }
-  },
-  watch: {
-    toggleAll() {
-      this.$store.dispatch("toggleAllLights", { state: this.toggleAll });
     }
   }
 };

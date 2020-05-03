@@ -18,10 +18,10 @@
               class="full-width"
               align="between"
               :ripple="false"
-              :style="{ background: preset[1].bg, color: preset[1].color }"
-              :icon="preset[1].icon"
+              :style="{ background: preset[Object.keys(preset)[0]].bg, color: preset[Object.keys(preset)[0]].color }"
+              :icon="preset[Object.keys(preset)[0]].icon"
               :icon-right="removePreset"
-              :label="preset[1].name"
+              :label="preset[Object.keys(preset)[0]].name"
               @click="deletePreset({preset: preset})"
             ></q-btn>
           </div>

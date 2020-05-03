@@ -3,6 +3,7 @@
     <q-knob
       v-model="dimValue"
       @input="dimLight"
+      @change="getGroups"
       :min="0"
       :max="255"
       size="100px"
@@ -66,7 +67,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["setDim", "getLights"]),
+    ...mapActions(["setDim", "getLights", "getGroups"]),
 
     dimLight(input) {
       const id = this.id;
@@ -101,7 +102,9 @@ export default {
       before: action => {
         if (action.type === "toggleAllLights") {
           action.payload.state
-            ? ((this.dimValue = 200), (this.isOn = true))
+            ? this.reachable
+              ? ((this.dimValue = 200), (this.isOn = true))
+              : ((this.dimValue = 0), (this.isOn = false))
             : ((this.dimValue = 0), (this.isOn = false));
         }
       }

@@ -10,6 +10,7 @@
           class="absolute-top-right q-ma-sm"
           @click="closeGroupsEdit"
         />
+
         <q-card-section class="group-edit" v-for="group in groups" :key="group.id">
           <q-input
             class="group-edit-input"
@@ -28,7 +29,6 @@
             </template>
           </q-input>
         </q-card-section>
-
         <q-card-section class="add-group">
           <q-input
             dark
@@ -81,9 +81,10 @@ export default {
     ...mapActions(["addNewGroup", "removeGroup", "changeGroupNames"]),
     addGroup() {
       const groupName = this.newGroupName;
-
-      this.addNewGroup({ name: groupName });
-      this.newGroupName = "";
+      if (groupName != "") {
+        this.addNewGroup({ name: groupName });
+        this.newGroupName = "";
+      }
 
       /* 
             existingGroupNames.includes(groupName)
@@ -117,6 +118,15 @@ export default {
   .group-edit {
     flex-direction: row;
     .group-edit-input {
+      animation: fade-in 500ms ease-in-out;
+      @keyframes fade-in {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
     }
   }
 }

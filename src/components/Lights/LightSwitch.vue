@@ -48,12 +48,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["lightOnOff", "getLightState"]),
+    ...mapActions(["lightOnOff", "getLightState", "getGroups"]),
     async toggle() {
       const state = await this.getLightState({ id: this.id });
-      this.lightOnOff({ state, id: this.id });
+      this.lightOnOff({ state, id: this.id }).then(
+        setTimeout(this.getGroups, 200)
+      );
       this.switchColor(state);
-      if (!state) this.$emit("lightsOn", 200);
+      if (!state) this.$emit("lightsOn", 300);
     },
 
     switchColor(state) {

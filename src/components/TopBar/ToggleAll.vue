@@ -5,7 +5,7 @@
     keep-color
     v-model="toggleState"
     v-if="gatewayFound"
-    @click="toggleAllLights({ state: toggleState })"
+    @input="toggleAllLights({state: toggleState})"
   />
 </template>
 
@@ -16,27 +16,38 @@ export default {
 
   data() {
     return {
-      toggleState: true
+      toggleState: this.lightStates
     };
   },
 
   computed: {
-    ...mapGetters(["groups", "gatewayFound"])
-  },
+    ...mapGetters(["groups", "gatewayFound"]),
+    lightStates() {
+      let states = [];
 
-  methods: {
-    ...mapActions(["toggleAllLights"]),
-
-    checkLightsStatus() {
-      const lightsStates = this.groups.filter(state => state.on);
-      lightsStates.length > 0
-        ? (this.toggleState = true)
-        : (this.toggleState = false);
+      Object.keys(this.groups).forEach(group => {
+        if (this.groups[group].lights.length) {
+          states.push(this.groups[group].state.any_on);
+        }
+      });
+      let anyOn = states.filter(on => on).length ? true : false;
+      return anyOn;
     }
   },
 
+  methods: {
+    ...mapActions(["toggleAllLights"])
+  },
+
   mounted() {
-    this.checkLightsStatus();
+    this.$store.subscribeAction({
+      after: action => {
+        if (action.type === "getGroups") {
+          //let state = this.lightStates;
+          this.toggleState = this.lightStates;
+        }
+      }
+    });
   }
 };
 </script>

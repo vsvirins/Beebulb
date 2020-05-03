@@ -71,10 +71,14 @@ def login():
             return jsonify({"msg": "Wrong password"})
 
 
+# TODO: New field in user, auto login- Check for it, login if true
 @routes.route('/auto_login', methods=['GET'])
 def auto_login():
-    user = User.query.filter_by(username='vsvirins').first()
-    return jsonify({"enabled": True, "key": user.key, "username": user.username})
+    user = User.query.filter_by(username='test').first()
+    if user:
+        return jsonify({"enabled": True, "key": user.key, "username": user.username})
+    else:
+        return jsonify({"msg": "User doesn't exsist"})
 
 
 @routes.route('/generate_key', methods=['POST'])
@@ -82,11 +86,15 @@ def generate_key():
     request_data = request.get_json()
     username = request_data['username']
     gateway_address = request_data['address']
+    gateway_usr = "delight"
+    gateway_pw = "delight"
 
     params = {"devicetype": 'beebulb-'+username}
 
     try:
-        r = requests.post(f'http://{gateway_address}/api', json=params)
+        r = requests.post(
+            f'http://{gateway_address}/api', json=params, auth=(gateway_usr, gateway_pw))
+
         if(r.status_code == 200):
             data = r.json()
             answer = data[0]

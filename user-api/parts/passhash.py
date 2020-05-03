@@ -16,7 +16,6 @@ def generate_password(password):
 
 
 def verify_password(username, password):
-    print('helasdasdlo')
     user = User.query.filter_by(username=username).first()
     password_hash = hashlib.pbkdf2_hmac(
         'sha256',

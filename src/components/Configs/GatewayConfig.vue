@@ -38,8 +38,8 @@
           </q-input>
         </q-card-section>
 
-        <q-card-actions align="right" class="text-grey">
-          <q-btn flat label="Save" @click="updateGateway" />
+        <q-card-actions align="right">
+          <q-btn flat label="Save" color="positive" @click="updateGateway" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -47,15 +47,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: 'GatewayConfig',
-  props: ['edit-gateway'],
+  name: "GatewayConfig",
+  props: ["edit-gateway"],
   data() {
     return {
       active: false,
-      address: '',
-      newGatewayName: ''
+      address: "",
+      newGatewayName: ""
     };
   },
   watch: {
@@ -64,18 +64,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['gatewayAdress', 'gatewayName'])
+    ...mapGetters(["gatewayAdress", "gatewayName"])
   },
   methods: {
-    ...mapActions(['changeGatewayName']),
+    ...mapActions(["changeGatewayName"]),
     updateGateway() {
-      if (this.newGatewayName !== '') {
+      if (this.newGatewayName !== "") {
         this.changeGatewayName({ name: this.newGatewayName });
       }
-      this.$emit('closeGatewayEdit');
+      this.$emit("closeGatewayEdit");
     },
     closeGatewayEdit() {
-      this.$emit('closeGatewayEdit');
+      this.$emit("closeGatewayEdit");
     }
   }
 };

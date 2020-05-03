@@ -11,7 +11,7 @@ new Vue({
   created() {
     store
       .dispatch("autoLogin")
-      .then(response => {
+      .then((response) => {
         if (response.enabled) {
           store.commit("AUTH", true);
           store.commit("SET_KEY", response.key);
@@ -21,10 +21,11 @@ new Vue({
             .then(() => store.dispatch("getLights"))
             .then(() => store.dispatch("getGroups"))
             .then(() => store.dispatch("getPresets"))
-            .catch(err => console.log(err));
+            //.then(() => store.dispatch("connectToWebSocket"))
+            .catch((err) => console.error(err));
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.error(err));
   },
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

@@ -13,9 +13,9 @@
         <q-fab-action
           v-for="preset in presets"
           :key="presets[preset]"
-          :style="{ background: preset[1].bg, color: preset[1].color }"
-          :icon="preset[1].icon"
-          :label="preset[1].name"
+          :style="{ background: preset[Object.keys(preset)[0]].bg, color: preset[Object.keys(preset)[0]].color }"
+          :icon="preset[Object.keys(preset)[0]].icon"
+          :label="preset[Object.keys(preset)[0]].name"
           @click="setPreset(preset)"
           label-position="right"
         />
