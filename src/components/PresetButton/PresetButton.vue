@@ -4,7 +4,7 @@
       outline
       unelevated
       class="fixed-bottom-right q-ma-md"
-      color="amber-1"
+      color="light-blue-2"
       :icon="presetIcon"
       direction="up"
       vertical-actions-align="right"
@@ -20,7 +20,13 @@
           label-position="right"
         />
       </div>
-      <q-fab-action flat color="white" text-color="grey-2" icon="add" @click="newPreset = true" />
+      <q-fab-action
+        flat
+        color="light-blue-2"
+        text-color="grey-2"
+        icon="add"
+        @click="newPreset = true"
+      />
       <new-preset :add-preset="newPreset" @closeWindow="newPreset = false" />
     </q-fab>
   </div>

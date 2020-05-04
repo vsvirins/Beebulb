@@ -184,11 +184,14 @@ html {
     }
 
     .q-circular-progress__track {
-      color: whitesmoke !important;
-      background: whitesmoke !important;
+      background: #f5f5f5 !important;
     }
+
     .text-dark {
       color: $primary-light !important;
+    }
+    .text-grey-10 {
+      color: #e1e1e1 !important;
     }
 
     .light-name {
