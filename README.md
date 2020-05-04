@@ -4,7 +4,7 @@
 Beebulb is a simple progressive web app used to control smart lights,
 it leverages the deCONZ REST Plugin to manage and communicate with ZigBee-devices.  
 Works on desktop and mobile.  
-**Supported Devices**
+**Supported Devices**  
 https://github.com/dresden-elektronik/deconz-rest-plugin/wiki/Supported-Devices
 
 ### Demo
